@@ -1,10 +1,3 @@
-% This is a template for rapidly starting new Latex documents.
-% Some considerations:
-%   - use pdflatex instead of xelatex or lualatex for compatibility with arxiv and publishers
-%       - no system fonts, instead use self-contained font packages like crimson and helvet
-%       - specify utf-8 input and T1 font encoding explicitly
-%   - use natbib/bibtex instead of biblatex/biber for compatibility with arxiv and publishers
-
 %-------------------------------------------------------------------------------------------
 % enter the author and paper information below:
 %-------------------------------------------------------------------------------------------
@@ -20,7 +13,7 @@
 % begin preamble setup
 %-------------------------------------------------------------------------------------------
 \RequirePackage[l2tabu,orthodox]{nag}   % warn if using any obsolete or outdated commands
-\documentclass[12pt,onecolumn]{article} % document style
+\documentclass[11pt,onecolumn]{article} % document style
 
 % import encoding and font packages for pdflatex, in order
 \usepackage[T1]{fontenc}                % output T1 font encoding (8-bit) so accented characters are a single glyph
@@ -39,7 +32,7 @@
 \usepackage{authblk}                    % footnote-style author/affiliation info
 \usepackage{booktabs}                   % better looking tables
 \usepackage{caption}                    % custom figure/table caption styles
-\usepackage[final]{draftwatermark}      % watermark paper as a draft
+\usepackage[]{draftwatermark}           % watermark paper as a draft
 \usepackage{endnotes}                   % enable endnotes
 \usepackage{geometry}                   % configure page dimensions and margins
 \usepackage{graphicx}                   % better inclusion of graphics
@@ -57,12 +50,12 @@
 % configure the page layout, via geometry package
 \geometry{
 	paper=letterpaper,         % paper size
-	top=3.5cm,                   % margin sizes
+	top=3.5cm,                 % margin sizes
 	bottom=3.5cm,
 	left=3.5cm,
 	right=3.5cm}
 \setlength{\columnsep}{0.75cm} % space between columns in two-column layout
-\setstretch{1.05}              % line spacing
+\setstretch{1.00}              % line spacing
 \clubpenalty=10000             % prevent orphans
 \widowpenalty=10000            % prevent widows
 
@@ -95,7 +88,7 @@
 %-------------------------------------------------------------------------------------------
 \begin{document}
 	
-\title{\papertitle\footnote{This is a working draft of: \papercitation}}
+\title{\papertitle\footnote{This is a working draft in progress: DO NOT DISTRIBUTE}}
 \date{\paperdate}
 \author[]{\myname \thanks{Email: \href{mailto:\myemail}{\myemail}}}
 \affil[]{\myaffiliation}
@@ -103,7 +96,7 @@
 \maketitle
 
 \begin{abstract}
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+As the rental housing market increasingly moves online, the Internet offers the promise of more-equal access to information for previously marginalized housing seekers. However, it is not known how evenly online listings represent different sociodemographic communities. Biases in representation would affect different groups' access to information for housing search, reinforcing and constructing new digital inequalities. They would also impact the broader market insights that housing practitioners and researchers could draw from collecting and analyzing listings to study affordability and rental supply. This study analyzes millions of Craigslist rental listings across the US and finds that whiter, wealthier, and better-educated communities are significantly over-represented at the expense of other communities. Other significant differences include age, language, student enrollment, rent, poverty rate, and household size. Majority-white tracts are over-represented on Craigslist more than twice as often as black or Hispanic tracts. Housing seekers in whiter, wealthier, better-educated, and more-expensive communities have a surplus of information available online to aid their search, while seekers in other communities face an information deficit.
 \vspace{1cm}
 \end{abstract}
 
@@ -112,55 +105,67 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 \section{Introduction}
 
-Large portions of the rental housing market have moved online over the past 10 years. Traditionally, rental listings appeared in local newspapers. Now they are primarily posted on web sites like Craigslist, which holds a near monopoly in the online rental listings space and is the 15\textsuperscript{th} most-visited web site overall in the US today. However, it is not well-understood how Craigslist represents the complete rental market. Are different kinds of communities, built environments, and demographic groups over- or under-represented in online rental listings?
+Large portions of the rental housing market have moved online over the past 10 years. Traditionally, rental listings appeared in local newspapers. Now they are primarily posted on web sites like Craigslist, which holds a near monopoly in the online rental listings space and is the 15\textsuperscript{th} most-visited web site overall in the US today. However, it is not well-understood to what extent Craigslist represents the complete rental market. Are different kinds of communities and demographic groups over- or under-represented in online rental listings? This can impact housing search and information access, as well as the conclusions that housing practitioners and researchers can draw from listings data.
 
-To address this knowledge gap, this study assesses market over- and under-representation on Craigslist at the census tract scale. It uses a dataset of millions of Craigslist rental listings across the US. First it spatially joins these rental listings to the 12,000 census tracts within the core cities of the 50 most populous US metropolitan statistical areas. Then it separately creates a counterfactual proportional reallocation of these listings, per-city, to compare how the observed distribution deviates from the proportional distribution. Next it explores the differences in demographic and built environment characteristics between these over- and under-represented tracts. Finally, it estimates a multiple regression model to examine \textit{ceteris paribus} effects of these characteristics on Craigslist representation.
+This study assesses online rental market over- and under-representation at the census tract scale, using a dataset of millions of Craigslist rental housing listings across the US. It explores the sociodemographic differences between these over- and under-represented tracts and estimates a regression model to examine \textit{ceteris paribus} effects of these characteristics on Craigslist representation. It finds that online rental listings over-represent whiter, richer, and better-educated tracts. On average, over-represented tracts have higher rents and larger homes, but smaller household sizes. They contain more college students, more English-only speakers, and fewer immigrants. Majority-white tracts are over-represented more than twice as often as Hispanic or black tracts. However, when controlling for related sociodemographic factors, increasing the white population share has only a small or negative effect on Craigslist representation, dependent on income. Housing seekers in whiter, wealthier, better-educated, and more-expensive communities have a surplus of information online to aid their search while seekers in other communities face a digital information deficit. As the rental housing market moves online, biases in the supply of information construct new digital inequalities that shape both housing search options and the conclusions planners can draw about rapidly-evolving markets.
 
-Summarize key findings in a couple sentences.
+This paper reviews the landscape of online rental housing listings, theories of digital participation, and the open question of representation in online markets. Then it describes the methods used to address this question before presenting their findings. Finally it discusses what this reveals about online housing market representation, access to information, and implications for housing planners and policymakers.
 
-This paper is organized as follows...
+
+
 
 \section{Background}
 
-Few researchers have studied large-scale Craigslist rental listings directly, due to the technical complexity of acquiring the data. Some studies, however, have examined Craigslist listings to study individual metropolitan markets \citep[e.g.][]{wegmann_understanding_2012}. Most studies of demographic representation on Craigslist have focused on the Fair Housing Act and racial discrimination by landlords \citep[e.g.][]{decker_housing_2010}. Another stream of literature has considered demand-side factors in Internet use and housing search. \citet{rae_online_2015} demonstrates how user-generated search areas spatially represent housing submarkets. But such online housing searches depend on Internet usage: \citet{mossberger_unraveling_2012} explore how Internet use and digital inequalities vary as a function of demographic characteristics and neighborhood effects. However, these studies of market representation and participation focus on \emph{demand}. The online representation of available rental housing \emph{supply} remains underexplored.
+Despite the growing importance of online listings to the rental housing market, they may not represent the full market. If they are not representative---if sampling biases exist---who is over- or under-represented \citep[cf.][]{worthen_invitation_2014}? As information sources about available rental housing move online, different communities' access to information and capacity to find housing depend on listings' representativeness and communities' ability/interest in engaging them. This can be considered from the supply side (i.e., the supply of information by landlords/brokers) and the demand side (i.e., seekers' Internet usage and search behavior).
 
-Review online discrimination and FHA.
+Information about available housing units for rent traditionally appeared in local newspaper classifieds. Today, however, listings overwhelmingly appear online. Craigslist in particular has become the foremost venue in the US, even as potential competitors like Facebook are now trying to compete with its near monopoly in online listings \citep{hau_newspaper_2006,brown_rental_2014,yurieff_facebook_2017}. Craigslist has cut newspapers' ad revenue by billions of dollars while substantially reducing rental vacancy rates and times-to-lease \citep{seamans_responses_2014,kroft_does_2014}.
 
-Review factors that play into internet usage rates.
+Nevertheless, the modern online rental housing market remains underexplored. Few researchers have studied large-scale Craigslist rental listings directly, due to the technical complexity of acquiring the data. Some studies, however, have examined Craigslist listings to study individual metropolitan markets \citep[e.g.][]{wegmann_understanding_2012,mallach_meeting_2010}. \citet{boeing_new_2017} examined Craigslist listings across the US and concluded that future research was needed to better understand sociodemographic representativeness. Most studies of demographic representation on Craigslist have focused on racial/gender discrimination by landlords \citep{ahmed_can_2010,hanson_landlords_2011,hanson_subtle_2011,hanson_field_2014,hogan_racial_2011,carlsson_discrimination_2014,ghoshal_finding_2015} and the Fair Housing Act \citep[e.g.][]{oliveri_discriminatory_2010,larkin_criminal_2010,wilemon_fair_2009,ross_cyberspace:_2009,kurth_striking_2007}.
 
-Unpack the information supply and what it means for demand-side rental housing search.
+Who participates in these online markets? Online housing search depends on Internet access and usage. The rise in Internet ubiquity over the past 20 years has been accompanied by concerns about a growing digital divide between information \enquote{haves} and \enquote{have-nots} \citep{hersberger_are_2003}. This divide may result from cultural differences or social inequalities: age, race, wealth, and education impact exposure and access to technology as well as attitudes, skills, and cultural norms in usage \citep{jones_u.s._2009,robinson_digital_2015}. Younger, whiter, better-educated, and higher-income Americans have higher Internet usage rates than other groups \citep{porter_using_2006}. Older adults are much less likely to use the Internet, and this effect is even more pronounced among those that are low-income, black, or Hispanic \citep{choi_digital_2013}. Neighborhood segregation, poverty, age, and race can all influence the reasons why residents do not use the Internet \citep{mossberger_unraveling_2012}. In the US, Internet usage and search engine behavior vary among different racial groups and as a function of native language \citep{slate_digital_2002,weber_who_2011}.
+
+This race gap is closing, however, and as of 2018, 89\% of white adults used the Internet versus 88\% of Hispanic and 87\% of black adults \citep{pew_research_center_internet_2018}. But it is less clear how this translates to housing search. Pre-Internet, \citet{newburger_sources_1995} found that black homebuyers relied on fewer information sources than whites did, possibly due to housing information being harder to acquire in black neighborhoods. \citet{farley_racial_1996} found that blacks relied more on social connections and newspaper ads to find housing than whites did, due to longstanding practices of real estate agents providing more information to white than black housing seekers and steering them toward different neighborhoods.
+
+Do online housing markets overcome or reinforce these disparities? The Internet could potentially offer information-disadvantaged housing seekers more information for their searches, but it remains unclear if this potential has been or will be realized \citep{decker_housing_2010}. \citet{palm_residential_2001} found no difference in race, income, or education among those who did versus did not use the Internet in their search, but did find age differences. \citet[][p.~598]{krysan_does_2008} however found that blacks were significantly less likely to use the Internet to search for housing than whites, concluding that \enquote{Given the rapid growth of the internet in renting and selling housing, the observed racial digital divide is a point of some concern. It is likely that the kinds of homes and apartments marketed on the internet differ from those available through other low-tech means and so those who do not use this medium may be at a disadvantage.}
+
+These studies of market representation and participation focus on \emph{demand}. However, the online representation of available rental housing \emph{supply} remains underexplored. If Internet access and usage differ between demographic groups, and if certain kinds of communities appear more in online rental listings, this could perpetuate neighborhood segregation. It could also reproduce longstanding information inequalities as new digital inequalities as certain communities have a surplus of housing information available, while others face information deficits, making identifying available housing and acquiring it unequal. Craigslist offers a useful data source for studying the representativeness of online housing markets due to its near monopoly in the space. The technology platform---and the listings it contains---both shape human behavior in the market as well as record it for researchers to observe/explore various questions of representation. For instance, \citet{fries_mining_2014} mined Craigslist casual sex ads and compared to census data to explore the geography of high-risk health behaviors, and other researchers have demonstrated how online classified listings target certain communities based on demographic traits \citep{garg_craigslist_2013,grossklags_understanding_2017}.
+
+This study investigates how online rental housing listings over- or under-represent different communities. Given the history of discrimination and the behavioral differences in technology adoption, Internet use, and housing search, this study hypothesizes that online rental markets are biased toward whiter, wealthier, and better-educated segments. That is, does the supply of information about available rental units in these online information exchanges over-represent these kinds of communities and under-represent others? How do different community sociodemographic characteristics influence supply-side market representation online?
+
+
 
 
 \section{Methodology}
 
-The study sites comprise the 12,505 census tracts within the core cities of the 50 most populous US metropolitan statistical areas (MSAs), ignoring tracts that contain zero rental units. We adopt the dataset of 11 million Craigslist housing rental listings collected by \citet{boeing_new_2017} in 2014, filtered to remove duplicate listings and extreme outliers, and to retain only geolocated listings. This results in a clean sample of 1.4 million listings.
+To answer these questions, we examine online rental housing listings across the US. The study sites comprise the 12,505 census tracts within the core cities of the 50 most populous US metropolitan statistical areas (MSAs), ignoring tracts that contain zero rental units. We adopt the dataset of 11 million Craigslist rental housing listings collected in 2014 by \citet{boeing_new_2017}, filtered to remove duplicate listings and extreme outliers, and to retain only geolocated listings. This results in a clean sample of 1.4 million listings.
+
+
+
+
 
 \subsection{Assessing representation}
 
-We spatially join these tracts and rental listings, counting how many of the latter appear in each of the former as count $\kappa$ per tract $t$. We attach corresponding 2014 ACS tract-level data (see Appendix \ref{tab:variables_list}) to calculate the number of rental units, $\tau$, in each tract as:
-
-\begin{equation}
-	\label{eq:count_units}
-	\tau_t = \frac{\upsilon_t}{1 - \nu_t}
-\end{equation}
-
-where $\upsilon$ represents the number of renter-occupied units in $t$ and $\nu$ represents its rental vacancy rate. Then we calculate a proportional reallocation, $\phi$, of these rental listings for each tract in each city as:
+We spatially join these tracts and rental listings, counting how many of the latter appear in each of the former as count $\kappa$ per tract $t$. This represents the empirical/observed distribution. We attach corresponding 2014 ACS tract-level data (see Appendix \ref{tab:variables_list}) to determine the number of vacant units for rent, $\tau$, in each tract. Then we calculate a proportional reallocation, $\phi$, of these rental listings for each tract in each city as:
 
 \begin{equation}
 	\label{eq:allocation}
-	\phi_t = \kappa_c \frac{\tau_t}{\tau_c}
+	\phi_t = \frac{\kappa_c \tau_t}{\tau_c}
 \end{equation}
 
-where $\phi_t$ indicates how many of the observed Craigslist listings in city $c$ would appear in its tract $t$ if these listings were redistributed across $c$'s tracts according to each's proportion of $c$'s total rental units. We calculate each tract's over- or under-representation on Craigslist as:
+where $\phi_t$ indicates how many of the observed Craigslist listings in city $c$ would appear in its tract $t$ if these listings were redistributed across $c$'s tracts according to each's proportion of $c$'s total vacant units for rent. This represents the theoretical/expected distribution. We then calculate\footnote{We add 1 to the numerator and denominator to maintain symmetry, avoid logarithm of zero, and make the ratio more expressive. Otherwise, e.g., the ratios 0/3 and 0/10 would be equal. In reality, 0/3 suggests that only 3 listings are \enquote{missing} whereas 0/10 suggests that 10 are \enquote{missing}: the latter is much further from the expected value. Adding 1s, the ratios instead are 1/4=0.25 and 1/11=0.09. This reflects how far the Craigslist count is from the proportional count. Moreover when a=b, a/b = (a+1)/(b+1).} each tract's over- or under-representation on Craigslist, $\rho$, as:
 
 \begin{equation}
-	\label{eq:overrepresentation}
+	\label{eq:representation}
 	\rho_t = \frac{\kappa_t + 1}{\phi_t + 1}
 \end{equation}
 
-Thus, a $\rho$ of 1.05 indicates a tract has\footnote{We add 1 to the numerator and denominator to later avoid logarithm of zero and to make the ratio more expressive. Otherwise, the ratios 0/3 and 0/50 would be the same value: 0. In reality, 0/3 suggests that only 3 listings are \enquote{missing} whereas 0/50 suggests that 50 are \enquote{missing}. The latter is much farther-off the expected value. Adding 1s, the ratios instead are 1/4=0.25 and 1/51=0.02. These ratios more accurately reflect how far-off the Craigslist count is from the proportional count. Moreover when a=b, a/b = (a+1)/(b+1).} 5\% more rental listings on Craigslist than we would expect to see if the city's listings were distributed among its tracts in proportion to each's share of the city's total rental units. Finally we use Gini coefficients to measure how evenly the listings are distributed across the study sites: a coefficient of 1 indicates that a single tract contains all the listings, while a coefficient of 0 indicates that they are perfectly evenly distributed among all tracts.
+Thus, when $\rho=1$, a tract has the same number of rental listings on Craigslist that we would expect if the city's listings were redistributed among its tracts in proportion to each's share of the city's total vacant rental units. Higher and lower values indicate over- and under-representation respectively. Finally, we calculate Gini coefficients to measure how evenly the listings are distributed across the study sites. A coefficient of 1 indicates that a single tract contains all the listings, while a coefficient of 0 indicates that they are perfectly evenly distributed among all tracts \citep{giorgi_gini_2017}.
 
-\subsection{Neighborhood differences}
+
+
+
+
+\subsection{Group differences}
 
 Once we have assembled the ACS data and the Craigslist representation indicator $\rho$, we examine the differences between over-represented (i.e., $\rho>1$) and under-represented (i.e., $\rho<1$) tracts using $t$-tests and calculating effect sizes as Cohen's $d$:
 
@@ -169,11 +174,15 @@ Once we have assembled the ACS data and the Craigslist representation indicator 
 	d = \frac{\mu_o - \mu_u}{\sigma_p}
 \end{equation}
 
-where $\mu_o$ and $\mu_u$ represent the means of the over- and under-represented tracts, respectively, and $\sigma_p$ represents their pooled standard deviation. The effect size provides information about the magnitude of difference between these groups---namely, by how many standard deviations the two means differ. By convention, a $d$ of 0.8 or greater represents a large effect, 0.5--0.8 represents a medium effect, 0.2--0.5 a small effect, and values below 0.2 a negligible effect.
+where $\mu_o$ and $\mu_u$ are the means of the over- and under-represented tracts, respectively, and $\sigma_p$ represents their pooled standard deviation. This measures a standardized magnitude of difference between these groups---namely, by how many standard deviations the two means differ. By convention, a $d$ of 0.8 or greater represents a large effect, 0.5--0.8 represents a medium effect, 0.2--0.5 a small effect, and values below 0.2 a negligible effect \citep{cohen_power_1992}.
+
+
+
+
 
 \subsection{Regression analysis}
 
-The $\rho$ ratio is more useful if we control for local turnover and vacancy, which could influence listing volume. To investigate the \textit{ceteris paribus} effects of different sociodemographic and built environment characteristics on Craigslist representation, we estimate a multiple regression model via ordinary least squares:
+The $\rho$ ratio is more useful if we further control for local inventory and turnover, which could influence listing volume. To investigate the \textit{ceteris paribus} effects of different sociodemographic and built environment characteristics on Craigslist representation, we estimate a multiple regression model via ordinary least squares:
 
 \begin{equation}
 	\label{eq:regression_formula}
@@ -182,9 +191,9 @@ The $\rho$ ratio is more useful if we control for local turnover and vacancy, wh
 
 where the response variable $y$ is Craigslist representation ($\rho$), $\beta_0$ is the intercept, $x_1$ is a vector of tract sociodemographic and neighborhood variables, $x_2$ is a vector of 49 city dummy variables, $\epsilon$ is random error, and $\beta_1$ and $\beta_2$ are vectors of parameters to be estimated. To correctly specify a model that is linear-in-parameters, we log-transform the response\footnote{Ratios lack symmetry: when $\kappa < \phi$, $\rho$ ranges from 0 to 1, but when  $\kappa > \phi$, $\rho$ ranges from 1 to infinity. The logarithm corrects this: when $\kappa = \phi$, $\rho = 1$ and $\log(\rho) = 0$. It produces symmetry as $\log(\rho)$ is approximately normally distributed and $\log(\rho) = -\log(\rho)$. That is, $\log(a/b) = \log(a)-\log(b)$, so we are evaluating the algebraic difference between logarithmic values.} and some of the predictors in $x_1$. Thus we can interpret the coefficients on log-transformed predictors as elasticities (the percent change in the response given a 1\% increase in the predictor) and those on untransformed predictors as semi-elasticities (the percent change in the response given a 1 unit increase in the predictor).
 
-We control for intermetropolitan variation with $x_2$ and for rental turnover with two variables in $x_1$: the rental vacancy rate and the proportion of the population still living in the same residence as a year ago. Neighborhood character variables include the tract's median rooms per home, proportion of structures built before 1940, distance to the city center, and average commute time. These control for typical building size and age as well as location centrality and job accessibility. 
+We control for intermetropolitan variation with $x_2$ and for rental inventory and turnover with three variables in $x_1$: the count of rental units, the proportion of the population still living in the same residence as a year ago, and the rental vacancy rate. Neighborhood character variables include the tract's median rooms per home, proportion of structures built before 1940, distance to the city center, and average commute time. These control for typical building size and age as well as location centrality and job accessibility.
 
-Sociodemographic predictors include the tract's median household income, median gross rent, average renter household size, the proportions of the population 20--34 years old and 65 or older, the proportion currently enrolled in college/graduate school, the proportion with a bachelor's or graduate degree, and the proportion that speaks English-only. They also include three race/ethnicity dummy variables representing if the tract is majority white\footnote{\enquote{White} is shorthand for non-Hispanic white as we examine the Hispanic population separately.}, black, or Hispanic. The model includes an interaction term---the majority-white dummy $\times$ median income---to explore how race moderates the effect of income on representation.
+Sociodemographic predictors include the tract's median household income, median gross rent, average renter household size, the proportions of the population 20--34 years old and 65 or older, the proportion currently enrolled in college/graduate school, the proportion with a bachelor's or graduate degree, the proportion that speaks English-only, and the proportions of the population that are white\footnote{\enquote{White} is shorthand for non-Hispanic white as we examine the Hispanic population separately.}, black, or Hispanic. The model includes an interaction term---the white proportion $\times$ median income---to explore how race moderates the effect of income on representation.
 
 
 
@@ -193,13 +202,29 @@ Sociodemographic predictors include the tract's median household income, median 
 
 \subsection{Spatial compression}
 
-Across these cities, the per-tract count of Craigslist listings, $\kappa$, has a Gini coefficient of 0.80, while the per-tract proportional allocation, $\phi$, has a coefficient of 0.54: rental listings concentrate substantially more than a proportional distribution would. But this effect is uneven across different places. On the low end, in Oklahoma City and Kansas City, the Gini coefficient of $\kappa$ is only 50--55\% higher than that of $\phi$. However in Hartford, Miami, Philadelphia, and Boston, the Gini coefficient of $\kappa$ is 3.2x, 2.8x, 2.8x, and 2.7x that of $\phi$, respectively, suggesting an extreme spatial compression of listings in these rental markets.
+Across these cities, the tract-level empirical distribution of Craigslist listings, $\kappa$, has a Gini coefficient of 0.80, while the theoretical distribution, $\phi$, has a coefficient of 0.70---i.e., rental listings are more concentrated than a proportional distribution would be---but this effect is uneven between cities. In four markets (Las Vegas, Oklahoma City, San Jose, and San Francisco), the $\phi$ Gini is higher (by 0.3\%--7.8\%) than that of $\kappa$, indicating rental listings are slightly more dispersed. However, in Hartford, Miami, Providence, and St. Louis, the $\kappa$ Gini is 2.2, 1.9, 1.8, and 1.7 times that of $\phi$, respectively, suggesting an extreme spatial compression of listings in these rental markets.
 
-As this concentration suggests, most tracts are at least slightly\footnote{This would include, for instance, a tract that had 300 rental listings when we expected 301 according to the proportional distribution.} under-represented on Craigslist (i.e., $\rho$ < 1), but this varies by demographics. White tracts are over-represented on Craigslist 2.2x as often as black tracts, and 3.3x as often as Hispanic tracts. Examining the racial composition of tracts with $\rho$ < 0.25 (i.e., with fewer than 25\% of the listings we would expect proportionally), only 11\% of majority-white tracts are as such \enquote{very} under-represented, but 27\% of black and 48\% of Hispanic tracts are.
+As this concentration suggests, most tracts are at least slightly\footnote{This would include, for instance, a tract that had 50 rental listings when we expected 51 according to the proportional distribution.} under-represented on Craigslist (i.e., $\rho$ < 1), but this varies by demographics. 52\% of majority-white tracts are over-represented, compared to only 19\% of majority-black and 22\% of majority-Hispanic tracts. Examining the racial composition of tracts with $\rho$ < 0.25 (i.e., with fewer than 25\% of the listings we would expect proportionally), only 11\% of majority-white tracts are as such \enquote{very} under-represented, but 27\% of black and 35\% of Hispanic tracts are.
 
-\subsection{Differences between tract groups}
+\subsection{Differences between groups}
 
-\begin{table*}[htbp]
+\begin{figure*}[tbp]
+	\centering
+	\includegraphics[width=1\textwidth]{fig_variable_distributions.png}
+	\caption{Probability densities of variables in over- (solid line) and under- (dashed line) represented tracts: $x$-axis is in each variable's units (see Appendix \ref{tab:variables_list}) and $y$-axis is density.}
+	\label{fig:variable_distributions}
+\end{figure*}
+
+\begin{figure*}[tbp]
+	\centering
+	\includegraphics[width=1\textwidth]{fig_tract_shares.png}
+	\caption{Share of total rental listings (theoretical versus empirical spatial distributions) in tracts with various sociodemographic characteristics.}
+	\label{fig:tract_shares}
+\end{figure*}
+
+Before we present the regression results, it is useful to consider how sociodemographic and other neighborhood characteristics differ between over- and under-represented tracts nationwide. Figure \ref{fig:variable_distributions} depicts the distributions of several key variables, illustrating clear differences between these groups. Six variables have medium effect sizes, either positive or negative (Table \ref{tab:effects_over_under}): median income, gross rent, the white population proportion, the proportion with a bachelor's/graduate degree, the proportion enrolled in college/graduate school, the proportion below poverty, and the proportion experiencing rent burden. Twelve more have small, significant effects. Figure \ref{fig:tract_shares} shows how the theoretical and empirical spatial distributions of listings differ. For instance, we expected to observe 33\% of listings in tracts with median income exceeding \$55,000, but instead we observe 56\%. Similarly we expected majority-white tracts to contain 39\% of listings, but instead they contain 59\%.
+
+\begin{table*}[tbp]
 	\centering
 	\small
 	\caption{Differences between over- and under-represented tracts nationwide: $d$ represents effect size, $\delta$ represents difference in means, *indicates $t$-test significance at $p$ < 0.05.}
@@ -207,7 +232,7 @@ As this concentration suggests, most tracts are at least slightly\footnote{This 
 	\input{table_effects.tex}
 \end{table*}
 
-\begin{table*}[htbp]
+\begin{table*}[tbp]
 	\scriptsize
 	\centering
 	\caption{Per-city effect sizes $d$ between over- and under-represented tracts. *indicates corresponding $t$-test significance at $p$ < 0.05.}
@@ -215,21 +240,20 @@ As this concentration suggests, most tracts are at least slightly\footnote{This 
 	\input{table_effects_cities.tex}
 \end{table*}
 
-Before we present the regression results, it is useful to show how sociodemographic and other neighborhood characteristics differ between over- and under-represented tracts nationwide (Table \ref{tab:effects_over_under}). The proportion of the population with a bachelor's/graduate degree has a large effect. Four more variables have medium effects: median income, gross rent, the white population proportion, and the proportion enrolled in college/graduate school. Twelve more have small effects, either positive or negative.
+On average compared to under-represented tracts, over-represented tracts have a white population proportion 20 percentage-points\footnote{We distinguish between percentage-point differences, which are additive, and percent changes, which are not.} (pp) higher, a Hispanic proportion 8 pp lower, and a black proportion 15 pp lower (Table \ref{tab:effects_over_under}). The proportion that speaks English-only is 8 pp higher and the foreign-born proportion is 4 pp lower. Average median home values are \$79,000 higher, median incomes are \$21,000 higher, and median gross rents are \$206 higher. The proportion of the population with a bachelor's/graduate degree is 17 pp higher and the proportion currently enrolled in college/graduate school is 7 pp higher, on average. In over-represented tracts the proportion of the population below poverty is 9 pp lower on average and the rent-burdened proportion is 8 pp lower. Renter household sizes are 0.3 persons smaller and the proportion living in the same home as a year ago is 4 pp lower. On average, over-represented tracts are 0.4 km closer to the city center and offer commutes 3.3 minutes shorter, but have slightly lower population densities and higher proportions of single-unit detached housing.
 
-On average compared to under-represented tracts, over-represented tracts have a white population proportion 17 percentage-points\footnote{We distinguish between percentage-point differences, which are additive, and percent changes, which are not.} (pp) higher, a Hispanic proportion 10 pp lower, and a black proportion 8.5 pp lower. The proportion that speaks English-only is 9 pp higher and the foreign-born proportion is 5 pp lower. Average median home values are \$74,000 higher, median incomes are \$17,000 higher, and median gross rents are \$180 higher. The proportion of the population with a bachelor's/graduate degree is 17 pp higher, the proportion currently enrolled in college/graduate school is 10 pp higher, and the proportion 20--34 years old is 4 pp higher, on average. In over-represented tracts the proportion of the population below poverty is 6 pp lower on average, as is the proportion that is rent-burdened. Renter household sizes are 0.3 persons smaller and the proportion living in the same home as a year ago is 4 pp lower. On average, over-represented tracts are 0.5 km closer to the city center and offer commutes 3.4 minutes shorter, but have slightly lower population densities.
+Finally we explore per-city differences between over- and under-represented tracts (Table \ref{tab:effects_cities}). Average median income is higher (i.e., $d$ > 0) in over-represented tracts in every city---and more than 1.5 standard deviations ($\sigma$) higher in Miami and Chicago. Rents are higher in over-represented tracts in every city with a significant difference---and more than 1 $\sigma$ higher in 7 cities, led by Miami and Chicago. The proportion of the population with a bachelor's/graduate degree is higher in every city with a significant difference---and more than 1.5 $\sigma$ higher in Miami, Hartford, Chicago, and New Orleans. The proportion enrolled in college/graduate school is higher in every city with a significant difference---and more than 1 $\sigma$ higher in Miami, Chicago, and Philadelphia. The white proportion is higher in every city with a significant difference---and more than 1 $\sigma$ higher in 7 of these cities, led by Miami and New Orleans.
 
-Finally we explore per-city differences between over- and under-represented tracts (Table \ref{tab:effects_cities}). Average median income is higher (i.e., $d$ > 0) in over-represented tracts in every city with a significant difference---and more than 1 standard deviation ($\sigma$) higher in Miami (2.1$\sigma$), Chicago, New Orleans, and Pittsburgh. Rents are higher in over-represented tracts in every city with a significant difference---and more than 1 standard deviation higher in 8 cities, led by Miami (1.9$\sigma$) and Chicago (1.6$\sigma$). The proportion of the population with a bachelor's/graduate degree is higher in every city with a significant difference---and more than 1 $\sigma$ higher in 15 of these cities, led by Miami (2.8$\sigma$), Chicago, Hartford, Philadelphia, and New Orleans. The proportion enrolled in college/graduate school is higher in every city with a significant difference---and more than 1 $\sigma$ higher in 9 of these cities, led by Boston (1.6$\sigma$), Philadelphia (1.5$\sigma$), Miami, and Chicago. The white proportion is higher in every city with a significant difference---and more than 1 $\sigma$ higher in 9 of these cities, led by Miami (2.6$\sigma$), New Orleans (1.6$\sigma$), Hartford, and Baltimore.
-
-The proportion that speaks English-only is more divisive: while Providence, Los Angeles, San Antonio, and Minneapolis have large positive effect sizes, Pittsburgh has a large negative effect size. The proportion below poverty is lower in every city with a significant difference, led by Miami (1.5$\sigma$), New Orleans, and Birmingham. Renter household size is lower in every city with a significant difference, led by Hartford (1.5$\sigma$), Miami (1.5$\sigma$), and Boston (1.3$\sigma$).
+The proportion that speaks English-only is more divisive: while several cities have medium-sized negative effects, many more have medium or large positive effects. The proportion below poverty is lower in every city with a significant difference, led by Miami, Houston, Washington, and New Orleans. Average renter household size is lower in all but one city (Las Vegas) with a significant difference, led by Hartford, Miami, and Boston.
 
 \subsection{Regression results}
 
-While the preceding differences do not control for confounds, regression analysis reveals the effects of various predictors while controlling for intermetropolitan variation, rental turnover, vacancy rates, and other demographic and neighborhood characteristics (Table \ref{tab:regression_results}). The model performs well overall: variables of interest have the expected signs and the coefficient of determination is 0.31---reasonable considering the extreme noisiness of this VGI. In terms of model specification and diagnostics, it demonstrates good linearity, homoskedasticity, approximately normally-distributed residuals, and minimal multicollinearity.
+Regression analysis reveals the effects of various predictors (Table \ref{tab:regression_results}) while holding other variables constant to disentangle effects. The model performs well: variables of interest have the expected signs and the coefficient of determination is 0.46---surprisingly high considering the noisiness of these user-generated data. In terms of model specification and diagnostics, it demonstrates good linearity, homoskedasticity, approximately normally-distributed residuals, and minimal multicollinearity.
 
-A \textit{ceteris paribus} \$100 increase in tract median rent increases representation on Craigslist by 6\%, a 1 pp increase in the college/graduate student proportion increases it 0.34\%, a 1 pp increase in the proportion with a bachelor's/graduate degree increases it 0.79\%, a 1 pp increase in the proportion that speaks English-only increases it 0.44\%, and a 1 pp increase in the 20--34 year old population proportion increases it by 0.48\%. The proportion age 65 and older has a negative but statistically insignificant effect ($p$ = 0.051, 95\% CI = -0.728--0.003). Majority-black and -Hispanic tracts have 11\% and 7.3\% lower representation, respectively, than other tracts on Craigslist. Being majority-white is statistically insignificant, but there is a significant interaction between the white dummy and median income: a 1\% increase in income increases representation by 0.20\% in majority-white tracts, but by 0.29\% in other tracts.
+A \textit{ceteris paribus} \$100 increase in tract median rent increases representation on Craigslist by 5.7\%, a 1 pp increase in the proportion with a bachelor's/graduate degree increases it 1.0\%, a 1 pp increase in the proportion that speaks English-only increases it 0.62\%, and a 1 pp increase in the 20--34 year old population proportion increases it by 0.40\%. A 1 pp increase in the proportion age 65 and older decreases it 0.51\%. A 1\% increase in distance from the city center decreases tract representation on Craigslist by 0.12\% and a 1 pp increase in the proportion of structures built before 1940 decreases it 0.28\%. Although a 1 room increase per home increases it by 4.5\%, a 1\% increase in renter household size decreases it 0.21\%. A 1 pp increase in the black proportion of the population decreases representation by 0.45\% and a 1 pp increase in the Hispanic proportion decreases it 0.23\%. 
 
-Regarding neighborhood controls, a 1\% increase in distance from the city center decreases tract representation on Craigslist by 0.14\% and a 1 pp increase in the proportion of structures built before 1940 decreases it 0.28\%. Although a 1 room increase per home increases it by 6.4\%, a 1\% increase in renter household size decreases it 0.2\%. In terms of rental turnover controls, a 1 pp increase in vacancy increases representation by 0.39\% and a 1 pp increase in the proportion of the population still living in the same home as a year ago decreases it by 0.48\%.
+The marginal effect of income on Craigslist representation depends on racial composition. With a population that is 10\% white, a 1\% increase in median income increases representation by 0.33\%. But with a 90\% white population, a 1\% increase in median income increases it by only 0.06\%. Similarly, in poorer tracts, \enquote{whiteness} has a more positive effect: when median income is \$10,000, a 1 pp increase in the white population proportion increases Craigslist representation by 0.08\%. But when median income is \$100,000, a 1 pp increase in the white proportion decreases it by 0.71\%.
+
 
 \begin{small}
 \begin{longtable}{l r r} 
@@ -242,36 +266,33 @@ Regarding neighborhood controls, a 1\% increase in distance from the city center
 
 \section{Discussion}
 
-Craigslist rental listings are concentrated into fewer tracts than a proportional distribution would be. Some rental markets---especially Hartford, Miami, Philadelphia, and Boston---demonstrate an extreme spatial compression of listings. This compression is not random: these same cities consistently appear among those with the largest standardized differences between over- and under-represented tracts on multiple sociodemographic variables.
+These data distill the collective behavior and intentions of millions of people listing rental housing units online. They do not, however, representatively reflect the full scope of all market segments and activity. As hypothesized, Craigslist rental listings over-represent some communities and under-represent others. These listings are more spatially-concentrated than expected and some rental markets---such as Miami and Hartford---demonstrate an extreme spatial compression of listings. This concentration is not random: such cities consistently appear among those with the largest standardized differences between over- and under-represented tracts across multiple sociodemographic variables. Their online housing markets are spatially concentrated and digitally segregated by race and class.
 
-Miami's disparities starkly illustrate this. Its average population proportion with a degree, white proportion, and median income are more than 2 standard deviations higher in over- versus under-represented tracts. Its average proportion below poverty and renter household size are both 1.5 standard deviations lower in over-represented tracts. On average in Miami, 56\% of the population has a degree in over-represented tracts versus only 16\% in under-represented tracts. 37\% versus 7\% of the population is white, household incomes are \$73,000 versus \$28,000, and home values are \$391,000 versus \$165,000. This Craigslist housing market is spatially concentrated and digitally segregated by race and class.
+Miami's disparities starkly illustrate this. Its average population proportion with a degree and white proportion are both 2 standard deviations higher in over- versus under-represented tracts. Its average median income and rent are both 1.5 standard deviations higher. On average in Miami, 51\% of the population has a degree in over-represented tracts versus only 17\% in under-represented tracts. 33\% versus 7\% of the population is white, household incomes are \$67,000 versus \$28,000, and home values are \$371,000 versus \$163,000. Nationwide, tracts over-represented on Craigslist are significantly better educated, whiter, and richer than under-represented tracts. They feature higher rents and larger homes, but smaller household sizes. They contain more college students, more English-only speakers, and fewer immigrants. Majority-white tracts are over-represented 2.4 and 2.7 times as often as Hispanic and black tracts, respectively. Conversely, only 1 in 9 majority-white tracts are \enquote{very} under-represented, compared to over a quarter of black tracts and over a third of Hispanic tracts.
 
-Nationwide, tracts over-represented on Craigslist are significantly better educated, whiter, and richer than under-represented tracts. They feature higher rents and smaller household sizes. They contain more college students, more English-only speakers, and fewer immigrants. Majority-white tracts are over-represented more frequently than black or Hispanic tracts, and only about 1 in 10 majority-white tracts are \enquote{very} under-represented, compared to about a quarter of majority-black tracts and half of majority-Hispanic tracts.
+Controlling for confounds to disentangle effects with a regression model, we find that higher rents and larger proportions of the population that are college-educated, are enrolled students, and speak English-only significantly predict greater representation on Craigslist. Newer housing stock, closer proximity to the city center, and more rooms per home---but smaller renter household sizes---predict greater representation. Higher incomes have a universally positive effect on Craigslist representation, but a larger effect in tracts with larger minority populations. Although larger proportions of the black and Hispanic populations consistently predict lower representation, the effect of white population size is moderated by income. In very poor tracts, a whiter population predicts greater representation, but in richer tracts, it predicts lower representation: that is, rich communities are less-represented on Craigslist if they are whiter. Contrast this finding with the white proportion's relative distributions (Figures \ref{fig:variable_distributions} and \ref{fig:tract_shares}) and $t$-test results (Table \ref{tab:effects_over_under}): although over-represented tracts are whiter than under-represented tracts, when we control for correlated factors such as income and education, the white proportion actually has a small or negative effect on representation.
 
-Controlling for rental turnover, vacancy rates, and other demographic and neighborhood characteristics: higher rents and larger proportions of the population that are white, English-only, 20--34 years old, college-educated, and enrolled students predict greater representation on Craigslist. Higher incomes have a universally positive effect, but this effect is smaller in white tracts than non-white tracts. Newer housing stock, shorter commutes, and closer proximity to the city center predict greater representation. More rooms per home---but smaller renter household sizes---significantly predict greater representation.
+These findings generally conform to theories of the digital divide and disparate housing search behaviors of different communities. Older Americans use the Internet less and their communities are less-represented on Craigslist. Immigrants and non-English speakers may be more likely to use soft ties and less likely to use an English-language web site like Craigslist to advertise or seek housing, effects reflected in our model. Wealthier whites may be more likely to use a broker, explaining how race and income moderate each other's effects. Blacks are less likely to search for housing online, and their communities are less-represented on Craigslist.
 
-Why? Could be demand driven, where the demand curves in wealthier, whiter, better educated neighborhoods differ from those in other neighborhoods, impacting the (online information exchange) quantity supplied. It could be supply driven, where certain kinds of landlords in certain kinds of neighborhoods prefer to advertise online. Likely it is a mixture of both: If a landlord's target market rarely seeks housing online or has low rates of Internet use, why would she advertise on Craigslist? Reciprocally, if a member of this target market rarely finds housing locations and types suitable for her when she does search online, why would she continue using Craigslist? These feedback loops could reinforce each other, suppressing some communities' usage while buttressing others.
+This raises a cause-and-effect/supply-and-demand question. Do landlords in certain communities advertise less online because they know their market segment uses the Internet less to search for housing? Or do certain communities use the Internet less to search for housing because of its dearth of information and their past experiences with racialized interactions? A demand curve in wealthier, whiter, better-educated neighborhoods that differs from those in other neighborhoods could impact the local quantity supplied of online information. Or, local landlords in certain neighborhoods may prefer to advertise online, because their own sociodemographic characteristics and Internet usage reflect those of the surrounding community.
 
-Caveats: we look at core cities, not wider metropolitan areas. Suburbs and exurbs are likely less-represented and their inclusion could change estimated model parameters. Seasonality: these listings are from springtime. Future work can further explore both of these, first by examining entire metropolitan areas and second by examining a full year of data. This study modeled tract representation on Craigslist, but future work could study how demographic and neighborhood characteristics contribute to listed rents and the disparity between listed rents and corresponding ACS rent figures. Finally, given the substantial demographic differences in Craigslist representation, future work could explore how tracts change over time to see how Craigslist functions as part of the broader mechanics of gentrification dynamics.
+It is likely a path-dependent interaction of supply and demand: if a landlord's target market rarely seeks housing online or has lower rates of Internet use, why would she advertise on Craigslist? Reciprocally, if a member of this target market rarely finds suitable housing types and locations when she does search online, why would she continue using Craigslist? These feedback loops could reinforce each other, suppressing some communities' usage while buttressing others. Housing brokers historically provided more information to white than black housing seekers: while the Internet promises information democratization, these information disparities seem to continue in online housing markets.
+
+While Craigslist does not constitute the entire online rental housing market, but it does hold a near monopoly. These listings were collected during spring 2014 and could reflect seasonal biases: future work could confirm these findings with longer-term longitudinal data. This study examined core cities, not wider metropolitan areas. Although many core cities contain suburban neighborhoods, including further-flung suburbs and exurbs could change estimated model parameters. Future work can build on these findings by examining entire metropolitan areas and a full year of data. This study modeled tract-level Craigslist representation, but future work could study how demographic and neighborhood characteristics contribute to asking rents and the difference between asking rents and corresponding ACS rents. Finally, given the substantial demographic disparities in Craigslist representation, future work could explore how tracts change over time to investigate online listings' role in the broader mechanics of gentrification dynamics.
 
 \section{Conclusion}
 
-As the rental housing market moves online, data sources like Craigslist offer an opportunity to monitor and understand affordability and the supply of available housing in real-time. However, they do not provide a holistic, unbiased window into the housing market. This study unpacks how this online market functions as an information exchange that over- or under-represents different communities. It also provides a glimpse into the supply side of digital inequality: housing seekers in whiter, wealthier, better-educated, and more-expensive communities have a surplus of information online to aid their search, while seekers in other communities face an information deficit. This affects the reinforcing feedback loops of supply-and-demand in community usage of online rental information exchanges, as well as the conclusions that housing planners can draw by collecting these data.
+As the rental housing market moves online, data sources like Craigslist offer an opportunity to monitor and understand affordability and the supply of available housing in real-time. However, they do not provide a holistic, unbiased window into the housing market. This study unpacks how this online market functions as an information exchange that over- or under-represents different communities. It also provides a glimpse into the supply side of digital inequality: housing seekers in whiter, wealthier, better-educated, and more-expensive communities have a surplus of information online to aid their search, while seekers in other communities face an information deficit. This can affect the reinforcing feedback loops of supply-and-demand in community usage of online rental information exchanges, as well as the conclusions that housing planners can draw by collecting these data.
 
-
-
-\section*{Acknowledgments}
-
-The author wishes to thank the following people for their comments and support. To do.
 
 % print the footnotes as endnotes, if any exist
 \IfFileExists{\jobname.ent}{\theendnotes}{}
 
+
 % print the bibliography
 \setlength{\bibsep}{0.00cm plus 0.05cm} % no space between items
-\bibliographystyle{apalike}
+\bibliographystyle{SageH}
 \bibliography{references}
-
 
 
 \section*{Appendix}
@@ -286,7 +307,6 @@ The author wishes to thank the following people for their comments and support. 
 	\label{tab:variables_list}
 	\input{table_variables.tex}
 \end{table*}
-
 
 
 \end{document}
