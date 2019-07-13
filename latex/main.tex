@@ -1,0 +1,800 @@
+\newcommand{\myname}{Geoff Boeing}
+\newcommand{\myemail}{boeing@usc.edu}
+\newcommand{\myaffiliation}{Department of Urban Planning and Spatial Analysis\\Sol Price School of Public Policy\\University of Southern California}
+\newcommand{\paperdate}{July 2019}
+\newcommand{\papertitle}{Online Rental Housing Market Representation and the Digital Reproduction of Urban Inequality}
+\newcommand{\papercitation}{Boeing, G. 2019. \papertitle. \textit{Environment and Planning A: Economy and Space}, in press.}
+\newcommand{\paperkeywords}{craigslist, demographics, digital divide, critical GIS, housing market, housing search, inequality, rental housing, smart cities, spatial analysis, spatial econometrics}
+
+%-------------------------------------------------------------------------------------------
+% begin preamble setup
+%-------------------------------------------------------------------------------------------
+\RequirePackage[l2tabu,orthodox]{nag}
+\documentclass[11pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{crimson}
+\usepackage{helvet}
+\usepackage[strict,autostyle]{csquotes}
+\usepackage[USenglish]{babel}
+\usepackage{microtype}
+\usepackage{abstract}                   % allow full-page title/abstract in twocolumn mode
+\usepackage{authblk}                    % footnote-style author/affiliation info
+\usepackage{booktabs}                   % better looking tables
+\usepackage{caption}                    % custom figure/table caption styles
+\usepackage[final]{draftwatermark}      % watermark paper as a draft
+\usepackage{endnotes}                   % enable endnotes
+\usepackage{geometry}                   % configure page dimensions and margins
+\usepackage{graphicx}                   % better inclusion of graphics
+\usepackage{hyperref}                   % hypertext in document
+\usepackage{longtable}
+\usepackage{natbib}                     % author-year citations w/ bibtex, including textual and parenthetical
+\usepackage{rotating}                   % rotate wide tables or figures on a page to make them landscape
+\usepackage{setspace}                   % configure spacing between lines
+\usepackage{titlesec}                   % custom section and subsection heading
+\usepackage{url}                        % make nice line-breakble urls
+
+% location of figure files, via graphicx package
+\graphicspath{{./}}
+
+% configure the page layout, via geometry package
+\geometry{
+	paper=letterpaper,         % paper size
+	top=3.8cm,                   % margin sizes
+	bottom=3.8cm,
+	left=4cm,
+	right=4cm}
+\setstretch{1.00}              % line spacing
+\clubpenalty=10000             % prevent orphans
+\widowpenalty=10000            % prevent widows
+
+% set section/subsection headings as the sans serif font, via titlesec package
+\titleformat{\section}{\normalfont\sffamily\large\bfseries\color{black}}{\thesection.}{0.3em}{}
+\titleformat{\subsection}{\normalfont\sffamily\small\bfseries\color{black}}{\thesubsection.}{0.3em}{}
+
+% make figure/table captions sans-serif small font
+\captionsetup{font={footnotesize,sf},labelfont=bf,labelsep=period}
+
+% configure pdf metadata and link handling, via hyperref package
+\hypersetup{
+	pdfauthor={\myname},
+	pdftitle={\papertitle},
+	pdfsubject={\papertitle},
+	pdfkeywords={\paperkeywords},
+	pdffitwindow=true,         % window fit to page when opened
+	breaklinks=true,           % break links that overflow horizontally
+	hidelinks=true             % remove link color and border
+}
+
+% configure watermark appearance: to turn it on/off use [final] argument at package import
+\SetWatermarkText{DRAFT}
+\SetWatermarkScale{1.3}
+\SetWatermarkLightness{0.9}
+
+%-------------------------------------------------------------------------------------------
+% end preamble setup, begin document
+%-------------------------------------------------------------------------------------------
+\begin{document}
+
+\title{\papertitle\footnote{{Preprint of: \papercitation}}}
+\author[]{\myname\footnote{Email: \href{mailto:\myemail}{\myemail}}}
+%\affil[]{\myaffiliation}
+\date{\paperdate}
+
+\maketitle
+
+\begin{abstract}
+As the rental housing market moves online, the Internet offers divergent possible futures: either the promise of more-equal access to information for previously marginalized homeseekers, or a reproduction of longstanding information inequalities. Biases in online listings' representativeness could impact different communities' access to housing search information, reinforcing traditional information segregation patterns through a digital divide. They could also circumscribe housing practitioners' and researchers' ability to draw broad market insights from listings to understand rental supply and affordability. This study examines millions of Craigslist rental listings across the US and finds that they spatially concentrate and over-represent whiter, wealthier, and better-educated communities. Other significant demographic differences exist in age, language, college enrollment, rent, poverty rate, and household size. Most cities' online housing markets are digitally segregated by race and class, and we discuss various implications for residential mobility, community legibility, gentrification, displacement, housing voucher utilization, and automated monitoring and analytics in the smart cities paradigm. While Craigslist contains valuable crowdsourced data to better understand affordability and available rental supply in real-time, it does not evenly represent all market segments. The Internet promises information democratization, and online listings can reduce housing search costs and increase choice sets. However, technology access/preferences and information channel segregation can concentrate such information-broadcasting benefits  in already-advantaged communities, reproducing traditional inequalities and reinforcing residential sorting and segregation dynamics. Technology platforms like Craigslist construct new institutions with the power to shape spatial economies, human interactions, and planners' ability to monitor and respond to urban challenges.
+\vfill
+\end{abstract}
+
+
+\section{Introduction}
+
+Large portions of the rental housing market have moved online over the past decade. Today, rental listings are primarily posted on websites like Craigslist, which holds a predominant position in the US as its 15\textsuperscript{th} overall most-visited website. According to the 2017 American Housing Survey, more renters in urbanized areas found their current homes through a site like Craigslist than through any other information channel. Housing practitioners and researchers, in turn, increasingly collect online listings to assess market supply in the smart cities paradigm of monitoring urban conditions through streams of user-generated data \citep{boeing_spot_2019,hu_monitoring_2019}.
+
+Although online listings have recently become a primary mode of information exchange in US rental housing markets, little is known about how they function or how well they actually represent the full market \citep{boeing_new_2017,schachter_immigration_2017,besbris_language_2018}. If online listings are not representative---i.e., if sampling biases exist---what kinds of communities are over- or under-represented? Biases impact information equity and housing search costs as well as the conclusions that housing researchers and policymakers can draw about the real world from crowdsourced data \citep{mclaughlin_data_2018,arribas-bel_use_2018,folch_fast_2018,narayanan_toward_2019}. Yet little is currently known about spatial patterns or biases in the rental listings that compose these information landscapes and shape housing search outcomes.
+
+This study assesses online rental market representativeness at the census tract scale, using a dataset of millions of Craigslist listings across the US. It explores the sociodemographics of over- and under-represented tracts and estimates spatial regression models to examine these traits' effects on representation. It finds that listings are spatially concentrated and over-represent whiter, wealthier, and better-educated tracts. Majority-White tracts are over-represented more than twice as often as Hispanic or Black tracts. Although large swaths of this market are affordable to low-to-moderate income and Black families, homeseekers in whiter, wealthier, better-educated, and more-expensive communities have a surplus of information available online to aid their searches while seekers in other communities face a digital information deficit. As the rental housing market moves online, technological self-selection and information supply biases construct new digital inequalities that shape housing search costs, choice sets, residential sorting, and the conclusions planners can draw about rapidly-evolving markets.
+
+\section{Inequality in the Housing Information Landscape}
+
+Housing technology platforms today forge emerging institutions with the capacity to reshape urban economies, human interactions, and information landscapes. \citep{wegmann_taming_2017,shaw_platform_2018,kim_planning_2019,fields_automated_2019,jiao_cities_2019}. These information landscapes---and any asymmetries or segregation within them---are central to housing search outcomes and residential sorting \citep{levitt_market_2008,kurlat_testing_2015,garmaise_confronting_2004,metzger_step_2019,ben-shahar_improved_2019}.
+
+Prospective renters heterogeneously rely on a constellation of information sources to identify available units, including websites, newspapers, agents/brokers, property for-rent signs, and word of mouth. \citet{krysan_cycle_2017} theorize a two-stage search process in which homeseekers decide which neighborhoods to search and then choose which units within them to consider, emphasizing the importance of information supplies. \citet{rae_online_2015} contends that the Internet has emerged as the first port of call for such searches, but online information also impacts the second stage by rendering individual units and in turn neighborhoods more legible and accessible to seekers. As the Internet constitutes an ever-increasing share of the rental housing information supply, different communities' access to information and capacity to find housing depend both on listings' representativeness and communities' abilities/interests in engaging with these platforms. This can be considered from the supply-side (i.e., the supply of information by landlords, managers, and brokers) and the demand-side (i.e., homeseekers' Internet usage and search preferences).
+
+On the supply-side, information about available housing units for rent traditionally appeared in local newspaper classifieds. Today, however, Craigslist has become the foremost such venue in the US, even as potential competitors like Facebook, Zillow, and Trulia try to challenge its near monopoly in online listings \citep{hau_newspaper_2006,brown_rental_2014,seamans_responses_2014,kroft_does_2014,yurieff_facebook_2017}. Researchers have increasingly turned to Craigslist listings to study individual metropolitan markets \citep[e.g.,][]{besbris_language_2018,brown_converting_2017,im_energy_2017,halket_homeownership_2015,mallach_meeting_2010,palm_scale_2018,schachter_immigration_2017,wegmann_understanding_2012}. Most studies of demographic representation on Craigslist have focused on discrimination by landlords \citep[e.g.,][]{hanson_field_2014,carlsson_discrimination_2014,evans_examining_2018,murchie_rental_2018} and the Fair Housing Act \citep[e.g.,][]{larkin_criminal_2010,oliveri_discriminatory_2010}. \citet{boeing_new_2017} examined Craigslist listings across the US, concluding further research was needed to understand sociodemographic submarket representativeness.
+
+On the demand-side, who consumes this online supply of information about available rental units? Online housing search depends on Internet access and usage. The rise in Internet ubiquity over the past two decades has been accompanied by concerns about a digital divide between information \enquote{haves} and \enquote{have-nots} \citep{hersberger_are_2003,riddlesden_broadband_2014}. This divide may result from cultural differences or social inequalities: age, race, wealth, and education impact exposure and access to technology as well as attitudes, skills, and cultural norms in usage \citep{jones_u.s._2009,robinson_digital_2015}. Younger, whiter, better-educated, and higher-income Americans have higher Internet usage rates than other groups \citep{porter_using_2006}. Internet use and search engine behavior vary among different racial groups and as a function of native language \citep{slate_digital_2002,weber_who_2011}. Older adults are less likely to use the Internet, and this effect is more pronounced among those who are low-income, Black, or Hispanic \citep{choi_digital_2013}. The race gap is closing, however, and as of 2018, 89\% of White adults used the Internet versus 88\% of Hispanic and 87\% of Black adults, but usage remains lower today among older, less-educated, and lower-income Americans \citep{pew_research_center_internet_2018,pew_research_center_10_2019}.
+
+It is less clear how this translates to housing search: different communities may prefer different information sources as a function of age, education, language, community ties, access to technology, and prior experiences with steering or discrimination. Pre-Internet, \citet{newburger_sources_1995} found that Black homebuyers relied on fewer information sources than Whites did, possibly due to housing information being harder to acquire in Black neighborhoods. \citet{farley_racial_1996} found that Blacks relied more on social ties and newspaper ads to find housing than Whites did, due to longstanding practices of real estate agents providing more information to White than Black homeseekers and steering them toward different neighborhoods. These agents concentrate in Whiter and wealthier neighborhoods, focusing their services and benefits in already-advantaged communities \citep{besbris_investigating_2017}. Beyond race, \citet{deboer_resident_1985} argued that elderly homeseekers face higher search costs, more-constrained radii, and fewer information resources than younger seekers: these information asymmetries and inequalities produce housing market disequilibrium, with overpayment rates correlated with seeker characteristics \cite[cf.][]{desmond_are_2016,desmond_poor_2019}.
+
+Do online housing markets attenuate these traditional information supply disparities or do they reproduce historical patterns of information segregation, steering, and sorting? As \citet[][p. 993]{stephens_gender_2013} argues, geospatial web platforms and technologies often \enquote{reproduce and exacerbate existing representational asymmetries} in the real world \cite[cf.][]{elwood_geographic_2010,mattern_interfacing_2014,thatcher_revisiting_2016,leszczynski_speculative_2016,brannon_datafied_2017}. Demographics and social networks shape our housing information supplies, producing neighborhood \enquote{blind-spots} and gaps in knowledge \citep{krysan_racial_2009}. Thus, information democratization and diversity on platforms like Craigslist could help expand and equalize residential searches. \citet{krysan_cycle_2017} argue that broadening such information sources---including rental search engine results---would expand homeseeker choice sets, in turn lessening the sociostructural factors that guide residential sorting \citep[cf.][]{sampson_neighborhood_2008,steil_household_2018}. While the Internet could offer information-disadvantaged homeseekers more information for their searches, it remains unclear if this potential has been realized \citep{palm_residential_2001,decker_housing_2010}. \citet{besbris_language_2018} found that the volume and type of information appearing in neighborhoods' Craigslist listings vary by demographics, with seekers in White- or Asian-majority neighborhoods receiving more information per listing than those in Black or Hispanic neighborhoods. \citet[][p.~598]{krysan_does_2008} found that Blacks were significantly less likely to use the Internet to search for housing than Whites, concluding: \enquote{Given the rapid growth of the Internet in renting and selling housing, the observed racial digital divide is a point of some concern.}
+
+These studies of representation and participation mainly focus on \emph{demand}. The representativeness of available rental housing \emph{supply} online remains underexplored, yet it could impact equity in multiple ways. First, if Internet usage differs between demographic groups---and if certain kinds of communities appear more in online rental listings---neighborhood segregation could be perpetuated through information channel segregation and self-selection: forms of sociostructural steering. Second, it could reproduce longstanding housing information inequalities as new digital inequalities, where privileged communities obtain surpluses of relevant housing information---lessening their search costs---while others face relative deficits. Third, these information supplies could make certain units or neighborhoods more legible and accessible to homeseekers---with implications for gentrification, displacement, and housing voucher utilization.
+
+\section{Methods}
+
+\subsection{Data}
+
+Due to its predominance in this information landscape today, Craigslist provides a powerful data source for studying the representativeness of online housing markets. This technology platform and the listings it contains shape human market behaviors while chronicling them for researchers. This study uses it to investigate if online rental listings over- or under-represent different communities and how community characteristics explain supply-side representativeness.
+
+The study sites comprise the 12,505 census tracts within the core municipalities of the 50 most populous US metropolitan statistical areas, ignoring tracts that contain no rental units. We adopt the dataset of Craigslist rental housing listings collected in 2014 by \citet{boeing_new_2017}, which was filtered to remove duplicates and retain only geolocated listings, resulting in a set of 1.4 million listings (see \textit{ibid.} for a detailed explanation of the collection/cleaning process, along with summary statistics of each step).
+
+Next we spatially join these tracts and rental listings then attach 2014 American Community Survey (ACS) tract-level data (Table \ref{tab:variables_list}). Although landlords, not neighborhoods, are the agents of interest, tract-level data offer the finest-scale approximation. The ACS is a sample survey, not an enumeration, and provides average rental vacancy rates rather than snapshots of vacancies at specific times.\endnote{See \citet{cresce_evaluation_2012}, \citet{spielman_patterns_2014}, and \citet{logan_models_2019} for comprehensive reviews and discussion of ACS tract-scale representativeness and limitations.} However, no existing dataset does so at sub-metropolitan scales. US Postal Service vacancy data provide finer spatial granularity, but crucially lack tenure information. Despite imperfections, the ACS offers the best data available to explore these questions by comparing average vacancy rates over time to Craigslist's aggregate listing volumes over time.
+
+
+\subsection{Assessing Representation}
+
+We tally how many listings appear in each tract as count $\kappa$. This represents the empirical/observed distribution. The ACS provides the number of vacant units for rent, $\tau$, in each tract. We then calculate a proportional reallocation, $\phi$, of these rental listings for each tract in each city as:
+
+\begin{equation}
+	\label{eq:allocation}
+	\phi_t = \frac{\kappa_c \tau_t}{\tau_c}
+\end{equation}
+
+\begin{table}[tbp]
+	\centering
+	\small
+	\caption{List of variables. Census sources refer to 2014 ACS tract-level data from which variable is derived. Percent estimates are converted to proportions by dividing by 100. \$ are 2014 inflation-adjusted US dollars.}
+	\label{tab:variables_list}
+	\input{table_variables.tex}
+\end{table}
+
+where $\phi_t$ indicates how many of the observed Craigslist listings in city $c$ would appear in its tract $t$ if these listings were redistributed across $c$'s tracts according to each's proportion of $c$'s total vacant units for rent. This represents the theoretical/expected distribution. We then calculate\endnote{We add 1 to the numerator and denominator to avoid occasional division by zero and logarithm of zero.} each tract's over- or under-representation on Craigslist, $\lambda$, as:
+
+\begin{equation}
+	\label{eq:representation}
+	\lambda_t = \frac{\kappa_t + 1}{\phi_t + 1}
+\end{equation}
+
+Thus, if $\lambda_t=1$, tract $t$ has the same number of rental listings on Craigslist that we would expect if the city's listings were redistributed among its tracts in proportion to each's share of the city's total vacant rental units. Higher and lower values indicate over- and under-representation respectively. Finally, we calculate Gini coefficients to measure how evenly the listings are distributed across city tracts. A coefficient of 1 indicates that a single tract contains all of the city's listings, while a coefficient of 0 indicates that they are perfectly evenly distributed among all of its tracts.
+
+
+\subsection{Between-Group Differences}
+
+Once we have assembled the ACS data and the Craigslist representation indicator $\lambda$, we calculate variables' differences-in-means between over-represented ($\lambda>1$) and under-represented ($\lambda<1$) tracts, as well as statistical significance via $t$-tests and practical significance (effect size) via Cohen's $d$:
+
+\begin{equation}
+	\label{eq:cohen_d}
+	d = \frac{\mu_o - \mu_u}{\sigma_p}
+\end{equation}
+
+where $\mu_o$ and $\mu_u$ are the means of the over- and under-represented tracts and $\sigma_p$ represents their pooled standard deviation. This measures a standardized magnitude of difference between these two groups---namely, by how many standard deviations their means differ. By convention, a $d$ of 0.8 or greater represents a large effect, 0.5--0.8 represents a medium effect, 0.2--0.5 a small effect, and values below 0.2 a negligible effect \citep{cohen_power_1992}.
+
+
+\subsection{Regression Analysis}
+
+These differences can be unpacked while controlling for inventory, turnover, and other variables that influence listing volume. To investigate the \textit{ceteris paribus} associations between Craigslist representation and different sociodemographic and built environment characteristics, we estimate a multiple regression model (Model I) via ordinary least squares (OLS):
+
+\begin{equation}
+	\label{eq:regression_formula}
+	y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon
+\end{equation}
+
+where the response vector $y$ is tract Craigslist representation ($\lambda$), $\beta_0$ is the intercept, $X_1$ is a matrix of observations on tract sociodemographic and neighborhood variables, $X_2$ is a matrix of city dummy variables, $\epsilon$ is random error, and $\beta_1$ and $\beta_2$ are vectors of parameters to be estimated. To correctly specify a model that is linear-in-parameters, we log-transform the response\endnote{Ratios lack symmetry: when $\kappa < \phi$, $\lambda$ ranges from 0 to 1, but when  $\kappa > \phi$, $\lambda$ ranges from 1 to infinity. The logarithm corrects this: when $\kappa = \phi$, $\lambda = 1$ and $\log(\lambda) = 0$. It produces symmetry as $\log(a/b) = -\log(b/a)$. That is, $\log(a/b) = \log(a)-\log(b)$, so we evaluate the algebraic difference between logarithmic values.} and some of the predictors in $X_1$. Thus we can interpret the coefficients on log-transformed predictors as elasticities (the percent change in the response given a 1\% increase in the predictor) and those on untransformed predictors as semi-elasticities (the percent change in the response given a 1 unit increase in the predictor).
+
+We control for intermetropolitan variation with $X_2$'s spatial fixed effects and for rental inventory and turnover with three variables in $X_1$: the count of rental units, the proportion of the population living in the same residence as a year ago, and the rental vacancy rate. Neighborhood character variables include the tract's median rooms per home, proportion of structures built before 1940, distance to the city center, and average commute time. These control for typical building size and age as well as location centrality and job accessibility.
+
+Sociodemographic predictors include the tract's median household income, median gross rent, average renter household size, the proportions of the population 20--34 years old and 65 or older, the proportion currently enrolled in college/graduate school, the proportion with a bachelor's or graduate degree, the proportion that speaks English-only, and the proportions of the population that are White\endnote{\enquote{White} and \enquote{Black} are shorthand throughout for non-Hispanic White/Black.}, Black, or Hispanic. The model includes an interaction term---the White proportion $\times$ median income---to explore how race moderates the effect of income on representation.
+
+Finally, Model I's diagnostics suggest the presence of spatial diffusion, so we estimate an additional spatial lag model (Model II) via maximum-likelihood estimation (MLE):
+
+\begin{equation}
+	\label{eq:regression_spatial_formula}
+	y = \rho Wy + \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \epsilon
+\end{equation}
+
+with variables defined as above, but also including $W$ as a queen-contiguity spatial weights matrix and $\rho$ as the spatial autoregressive coefficient to be estimated.
+
+
+\section{Findings}
+
+\subsection{Spatial Compression}
+
+Across these cities, the tract-level observed distribution of Craigslist listings, $\kappa$, has a Gini coefficient of 0.80, while the expected distribution, $\phi$, has a coefficient of 0.70---i.e., rental listings are more spatially-concentrated than a proportional distribution would be---but this phenomenon is uneven between cities. In four markets (San Francisco, San Jose, Oklahoma City, and Las Vegas), the $\phi$ Gini is slightly higher (by 0.4\%--7.7\%) than that of $\kappa$, indicating rental listings are slightly more dispersed. However, in St. Louis, Providence, Miami, and Hartford, the $\kappa$ Gini is 70--120\% higher than that of $\phi$, indicating an extreme spatial compression of listings in these rental markets.
+
+As this concentration suggests, most tracts are at least slightly under-represented on Craigslist (i.e., $\lambda$ < 1), but this varies by demographics. Overall, 52\% of majority-White tracts are over-represented, compared to only 19\% of majority-Black and 22\% of majority-Hispanic tracts. Examining the racial composition of tracts with $\lambda$ < 0.25 (i.e., with fewer than 25\% of the listings we expect), only 11\% of majority-White tracts are as such \enquote{very} under-represented, but 27\% of Black and 35\% of Hispanic tracts are.
+
+\subsection{Differences Between Over- and Under-Represented Tracts}
+
+\begin{figure}[tbp]
+	\centering
+	\includegraphics[width=1\textwidth]{fig_variable_distributions.png}
+	\caption{Variables' estimated probability densities across over/under- represented tracts: $x$-axis is in variable's units (details in Table \ref{tab:variables_list}). The probability for any interval equals the corresponding area under the curve.}
+	\label{fig:variable_distributions}
+\end{figure}
+
+\begin{figure}[tbp]
+	\centering
+	\includegraphics[width=1\textwidth]{fig_tract_shares_grouped.png}
+	\caption{Share of total rental listings (expected versus observed distributions) in tracts with various characteristics.}
+	\label{fig:tract_shares}
+\end{figure}
+
+Figures \ref{fig:variable_distributions} and \ref{fig:tract_shares} illustrate descriptive patterns in how sociodemographic and other neighborhood characteristics differ significantly between over- and under-represented tracts nationwide. Figure \ref{fig:variable_distributions} depicts the distributions of key variables, illustrating the differences between these two groups. In particular, the White proportion's distribution nearly inverts between over- and under-represented tracts. Six variables' differences demonstrate medium effect sizes, either positive or negative (Table \ref{tab:effects_over_under}\endnote{As a robustness test, we also recalculate $\delta$ in Table \ref{tab:effects_over_under} after discarding outliers (at $\pm2$ and $\pm3$ standard deviations) in each variable and $\lambda$. All values remain significant and signed in the same directions, with one exception: distance to city center.}): median income, gross rent, the White population proportion, the proportion with a bachelor's/graduate degree, the proportion enrolled in college/graduate school, the proportion below poverty, and the proportion experiencing rent burden. Twelve more have small, significant effects. Figure \ref{fig:tract_shares} shows how the expected and observed distributions of listings diverge. For instance, we expect only 33\% of all listings to appear in tracts with median income exceeding \$55,000, but instead we observe 56\%. Similarly we expect majority-White tracts to contain 39\% of all listings, but instead they contain 59\%.
+
+\begin{table}[tb]
+	\centering
+	\small
+	\caption{Differences-in-means between over/under-represented tracts nationwide: Cohen's $d$ represents effect size, $\delta$ represents difference, * indicates $t$-test significance at $p$ < 0.05.}
+	\label{tab:effects_over_under}
+	\input{table_effects.tex}
+\end{table}
+
+\begin{table}[tbp]
+	\centering
+	\footnotesize
+	\caption{Per-city difference-in-means effect sizes (Cohen's $d$) between over/under-represented tracts: * indicates corresponding difference-in-means $t$-test significance at $p$ < 0.05.}
+	\label{tab:effects_cities}
+	\input{table_effects_cities.tex}
+\end{table}
+
+On average compared to under-represented tracts, over-represented tracts have a White population proportion 20 percentage-points\endnote{We distinguish between percentage-point differences, which are additive, and percent changes, which are not.} (pp) higher, a Hispanic proportion 8 pp lower, and a Black proportion 14 pp lower (Table \ref{tab:effects_over_under}). The proportion that speaks English-only is 8 pp higher and the foreign-born proportion is 4 pp lower. Average median home values are nearly \$80,000 higher, median incomes \$21,000 higher, and median gross rents \$200 higher. The proportion of the population with a bachelor's/graduate degree is 17 pp higher and the proportion currently enrolled in college/graduate school is 7 pp higher, on average. In over-represented tracts the proportion of the population below poverty is 9 pp lower and the rent-burdened proportion is 8 pp lower. Over-represented tracts offer shorter commutes and have slightly lower population densities, smaller household sizes, and higher proportions of single-unit detached housing on average.
+
+These differences are significant, but are they consistent across cities? Although Craigslist represents certain cities more evenly than others, some consistent patterns emerge in the per-city differences between over- and under-represented tracts (Table \ref{tab:effects_cities}). Average median income is higher in over-represented tracts (i.e., $d$ > 0) in every city, and more than 1.5 standard deviations higher in Miami and Chicago. Rents are higher in over-represented tracts in every city with a significant difference, and more than 1 standard deviation higher in 7 cities, again led by Miami and Chicago. The proportion of the population with a bachelor's/graduate degree is higher in every city with a significant difference, and more than 1.5 standard deviations higher in Miami, Hartford, Chicago, and New Orleans. The proportion enrolled in college/graduate school is higher in every city with a significant difference, and more than 1 standard deviation higher in Miami, Chicago, and Philadelphia. Similarly, the White proportion is higher in every city with a significant difference, and more than 1 standard deviation higher in 7 of these, led by Miami and New Orleans. However, the proportion that speaks English-only is more divisive: while some cities have medium-sized negative effects, many more demonstrate medium or large positive effects. Finally, the proportion below poverty is lower in every city with a significant difference, led by Miami, Houston, Washington, and New Orleans, and the average renter household size is lower in all but one city (Las Vegas) with a significant difference, led by Hartford, Miami, and Boston.
+
+\subsection{Regression Results}
+
+\begin{table}[tb]
+	\centering
+	\small
+	\caption{Regression model parameter estimates and standard errors. Variables defined in Table \ref{tab:variables_list}. Model I (Equation \ref{eq:regression_formula}) is estimated with OLS. Model II (Equation \ref{eq:regression_spatial_formula}) is estimated with MLE. Spatial fixed effects not reported. Dependent variable is Craigslist representation ($\lambda$) and * indicates significance at $p$ < 0.05.}
+	\label{tab:regression_results}
+	\input{table_regression.tex}
+\end{table}
+
+As the two regression models tell similar stories (Table \ref{tab:regression_results}), we focus on Model I for interpretability.\endnote{Due to spatial diffusion, Model II's coefficients cannot be directly interpreted as marginal effects because the response depends on the predictors' values at all spatially correlated locations \citep[][p. 164]{anselin_modern_2014}.} A \textit{ceteris paribus} \$10 increase in tract median rent increases representation on Craigslist by 0.58\%, a 1 pp increase in the proportion with a bachelor's/graduate degree increases it 1.03\%, and a 1 pp increase in the proportion that speaks English-only increases it 0.69\%. A 1 pp increase in the 20--34 year old population proportion increases it by 0.41\% but a 1 pp increase in the proportion age 65 and older decreases it 0.50\%. A 1\% increase in distance from the city center decreases tract representation on Craigslist by 0.12\% and a 1 pp increase in the proportion of structures built before 1940 decreases it 0.28\%. Although a 1 room increase per home increases it by 4.4\%, a 1\% increase in renter household size decreases it 0.21\%.
+
+A 1 pp increase in the Black population proportion decreases representation by 0.57\% and a 1 pp increase in the Hispanic proportion decreases it 0.30\%. Thus, even when controlling for income, education, age, and language, greater shares of Black or Hispanic residents predict lower representation in online rental listings, indicating a distinct race/ethnicity effect. Given the interaction term, the marginal effect of income on Craigslist representation depends on the White population proportion. When the population is 10\% White, a 1\% increase in median income increases representation by 0.33\%. But with a 90\% White population, a 1\% increase in median income increases it by only 0.06\%. Thus, higher incomes are associated with greater online representation in less-White communities, but homogeneously White communities tend to be represented similarly online nearly irrespective of income. Likewise, in poorer tracts, \enquote{whiteness} has a more positive effect: when median income is \$8,000, a 1 pp increase in the White population proportion increases Craigslist representation by 0.04\%. But when median income is \$100,000, a 1 pp increase in the White proportion decreases it by 0.80\%. In other words, having a larger share of White residents predicts greater online representation in very poor communities, but in high-income communities it predicts lower representation: the model's interaction/moderation effects suggest that wealthier Whites may be more likely to hire brokers or rely on more-exclusive listing services than the free-and-open Craigslist platform.
+
+Finally, we perform a series of robustness tests,\endnote{These tests include re-estimating Equations \ref{eq:regression_formula} and \ref{eq:regression_spatial_formula} after: removing response variable outliers (at $\pm2$ and $\pm3$ standard deviations); operationalizing a location quotient as an alternative response variable \citep[see][]{billings_location_2012}; filtering the tracts by various minimum-listings thresholds; adding a spatial-error term to each equation \citep[see][]{anselin_modern_2014}; and computing an alternative distance-decay spatial weights matrix.} across which we find the models tell a consistent story, especially regarding key variables of interest. For example, the proportion-Black and proportion-Hispanic parameter estimates remain negative across these tests and remain significant across nearly all of them. The median rent and median income parameter estimates remain positive and significant across all the robustness tests. In other words, these key race/ethnicity and socioeconomic status trends persist throughout various analytical reformulations.
+
+
+\section{Discussion}
+
+\subsection{Representativeness}
+
+These data distill the collective behavior and intentions of millions of people listing rental units online. They do not, however, represent all market segments and activity. It becomes essential to understand these biases as homeseekers and researchers increasingly turn to the Internet to explore rental markets. Craigslist listings spatially concentrate more than expected and some markets---such as Miami's---demonstrate extreme compression. Such cities consistently appear among those with the largest differences between over- and under-represented tracts across multiple sociodemographic variables. Their online housing markets are spatially concentrated and digitally segregated by race and class.
+
+Miami's disparities starkly illustrate this. Its average population proportion with a college degree and White proportion are both 2 standard deviations higher in over- versus under-represented tracts. Its average median income and rent are both 1.5 standard deviations higher. On average in Miami, 51\% of the population has a degree in over-represented tracts versus only 17\% in under-represented tracts. 33\% versus 7\% of the population is White, household incomes are \$67,000 versus \$28,000, and home values are \$371,000 versus \$163,000. Nationwide, tracts over-represented on Craigslist are significantly better-educated, whiter, and wealthier than under-represented tracts. They have higher rents and larger homes, but smaller household sizes. They contain more college students, more English-only speakers, and fewer immigrants. Majority-White tracts are over-represented 2.4 and 2.7 times as often as Hispanic and Black tracts. Conversely, only 1 in 9 majority-White tracts is \enquote{very} under-represented, compared to over a quarter of Black and over a third of Hispanic tracts. Craigslist's information-broadcasting benefits concentrate in traditionally advantaged communities.
+
+Controlling for confounds to disentangle relationships, we find that higher rents and larger proportions of the population that are college-educated, aged 20--34, and speak English-only each significantly predict greater representation on Craigslist. Newer housing stock and more rooms per home---but smaller renter household sizes---also predict greater representation. Higher incomes have a universally positive relationship with representation, but a larger one in tracts with higher minority populations. Finally, the key race/ethnicity effects persist in both models and throughout the robustness tests: larger Black and Hispanic shares of the population consistently predict lower representation in online rental listings.
+
+\subsection{Digital Inequality or a Redoubt of Illegibility?}
+
+Beyond identifying sampling biases that render certain communities less-legible to big data analytics, these findings also contribute supply-side evidence to theories of the digital divide and disparate housing search. For instance, the literature suggests that Black and elderly Americans are less likely to search for housing online, and we confirm that these communities are less-represented in online listings. Our findings on immigrants and non-English speakers may relate to common preferences to use soft ties rather than English-language websites to advertise or seek housing. Craigslist's information channel dominance varies accordingly within and between cities.
+
+Of course, certain communities may prefer certain information channels for a variety of reasons. But as the housing market moves online, technological self-selection among listers and seekers reinforces the sociostructural sorting mechanisms that perpetuate neighborhood blind-spots, residential segregation, and unequal search costs. This study identifies structural differences in this information supply between different kinds of communities, but not \emph{why} each submarket behaves differently---many factors could be simultaneously at play. Yet it demonstrates that the spatial patterns of traditional housing information inequality and steering are reproduced online through the segregation and asymmetry of information supplies.
+
+These phenomena have various implications for residential mobility, sorting, and housing policy. Disadvantaged communities miss out on the reduced search costs and expanded choice sets provided by online platforms---benefits that instead primarily accrue to already-advantaged communities. A two-tiered system emerges in which privileged communities exchange housing information through one channel, while all others resort to separate channels. These forces perpetuate the self-reinforcing cycles of durable inequality: information segregation limits homeseekers' discovery of housing in neighborhoods different from their own---in turn limiting the ability to integrate neighborhoods for more diverse incomes, education levels, ages, and ethnicities \cite[cf.][]{krysan_cycle_2017,ellen_can_2018,pendall_pathways_2018,steil_household_2018}.
+
+Conversely, another important implication is that \emph{not} appearing in online listings could be advantageous for underprivileged neighborhoods if it makes them less accessible to gentrification and displacement. That is, if these communities' members tend to search for housing online less than wealthier seekers do, and if available units in these neighborhoods appear online less, they may be less discoverable to Internet-savvy outsiders. Thus, information under-representation could shield vulnerable communities in a redoubt of digital illegibility, while reciprocally making over-represented privileged communities more legible to a broad cross-section of homeseekers who otherwise may not have acquired information about these neighborhoods. The latter has important policy ramifications as it could expand the choice sets of housing voucher holders seeking to move to higher-opportunity neighborhoods, if affordable units can be found \cite[cf.][]{rosen_rigging_2014,schwartz_encouraging_2017,mclaughlin_data_2018,reina_section_2019}. Practitioners, for example, could take advantage of this by broadcasting eligible-unit information online or by helping voucher holders devise online search strategies that focus on unit characteristics in higher-opportunity neighborhoods rather than familiar geographic silos.
+
+Finally, what about market segmentation? Concerns about digital inequality could be assuaged if online listings match high-end housing supply and demand, while other segments simply use a different suitable information channel instead. But, crucially, Craigslist does not merely represent the high-end of the market. 49\% of these listings are affordable (i.e., asking rent < 30\% of income) for households just below the 2014 US median household income, and 23\% of them are affordable for households just below the corresponding Black median. Millions of Craigslist rental listings \emph{are} within the reach of low-to-moderate income and Black families---yet listings appear disproportionately infrequently in these communities. Housing brokers historically provided different information to White and Black homeseekers: although the Internet promises information democratization, these disparities seem to continue online.
+
+\subsection{Information Landscapes and Housing Dynamics}
+
+A critical project lies ahead in unpacking the cause-and-effect/supply-and-demand question. Do landlords in certain communities advertise online less because they know their market segment uses the Internet less to search for housing? Or do certain communities use the Internet less to search for housing because of unfamiliarity, its dearth of relevant information, or past experiences with racialized interactions? If a community member rarely finds suitable units when she does search online, why would she continue doing so? Conversely, a relative affinity for Internet use in wealthier, whiter, better-educated neighborhoods could stimulate the local supply of online information. Local landlords in certain neighborhoods may prefer to advertise online as their own Internet usage reflects that of the surrounding community. Neighborhoods with more subsidized housing might rely on other information channels, even other online channels such as https://gosection8.com/. Some landlords even avoid Craigslist to deliberately filter and limit the number of potential applicants \citep{mendez_professional_2016}. Such patterns reflect path-dependent interactions of supply and demand feedback loops, suppressing some communities' usage while buttressing others'.
+
+The present study found correlative patterns but more work is needed to elucidate their nature, scale, and cause. Although Craigslist does not constitute the entire online listings marketplace, it holds a dominant market position and has uniquely low barriers to entry. However, these listings were collected during spring and could reflect seasonal biases: future work can confirm these findings with longer-term longitudinal data and larger sample sizes to lessen the lumpiness of real-world volunteered geographic information. This study examined large core cities, not wider metropolitan areas or small towns. Although many core cities contain extensive suburban neighborhoods, the inclusion of further-flung suburbs and exurbs might change estimated model parameters: future research can examine regional markets or estimate individual local models. Finally, due to the discussed limitations of ACS vacant unit counts, follow-up work should confirm these results with additional sources of vacancy data.
+
+Despite these caveats, our findings conform to theory and reasonable expectations, providing a first glimpse into this information landscape. This study modeled tract-level representation, but subsequent research can investigate how demographic, neighborhood, and unit characteristics contribute to asking rents and the difference between asking rents and corresponding ACS rents. This leads to a critical open question: do online listings render units in disadvantaged neighborhoods more accessible to privileged homeseekers, or does under-representation shield these communities from \enquote{colonization?} Given the substantial demographic disparities identified here, future work can explore how tracts change over time to investigate online listings' role in housing search efficiency and the broader dynamics of gentrification.
+
+\section{Conclusion}
+
+If information is power in today's cities and markets, then disparate access to it can influence community futures, opportunities, and equity. As online platforms capture an ever-greater share of the rental housing market's information landscape, data sources like Craigslist offer invaluable opportunities to understand affordability and available rental supply in real-time. They do not, however, provide a holistic view of the market, as this information exchange over- and under-represents certain communities.
+
+This study developed a methodology to identify sampling biases in large harvested urban datasets, providing a glimpse into the supply-side of digital inequality and the potential blind-spots of smart city automated analytics. The Internet's ability to broaden information sources and democratize access to housing data remains contingent on landlords listing online. Housing seekers in whiter, wealthier, better-educated, and more-expensive communities have a surplus of relevant information online to aid their searches while seekers in other communities face a deficit, reproducing historical patterns of information inequality. In turn, these biases influence the reinforcing feedback loops of supply and demand in community usage and residential sorting, as well as the conclusions that housing planners can draw by collecting these data.
+
+\section*{Acknowledgments}
+
+Portions of this work were previously presented at the ACSP annual conference and at Harvard University’s Joint Center for Housing Studies. The author wishes to thank those attendees as well as Max Besbris, Ariela Schachter, Jake Wegmann, Nat Decker, Sam Maurer, Craig Jones, Dan Chatman, and Dillon Mahmoudi for their helpful comments and suggestions. Finally, this work is particularly indebted to Paul Waddell, who graciously allowed the reuse of data originally collected in his lab at UC Berkeley.
+
+% print the footnotes as endnotes, if any exist
+\IfFileExists{\jobname.ent}{\theendnotes}{}
+
+
+% print the bibliography
+\setlength{\bibsep}{0.00cm plus 0.05cm} % no space between items
+\bibliographystyle{SageH}
+%\bibliography{references}
+
+\begin{thebibliography}{77}
+	\providecommand{\natexlab}[1]{#1}
+	\providecommand{\url}[1]{\texttt{#1}}
+	\providecommand{\urlprefix}{URL }
+	\expandafter\ifx\csname urlstyle\endcsname\relax
+	\providecommand{\doi}[1]{DOI:\discretionary{}{}{}#1}\else
+	\providecommand{\doi}{DOI:\discretionary{}{}{}\begingroup
+		\urlstyle{rm}\Url}\fi
+	
+	\bibitem[{Anselin and Rey(2014)}]{anselin_modern_2014}
+	Anselin L and Rey S (2014) \emph{Modern {Spatial} {Econometrics} in
+		{Practice}}.
+	\newblock Chicago, IL: GeoDa Press.
+	
+	\bibitem[{Arribas-Bel and Bakens(2018)}]{arribas-bel_use_2018}
+	Arribas-Bel D and Bakens J (2018) Use and {Validation} of {Location}-{Based}
+	{Services} in {Urban} {Research}.
+	\newblock \emph{Urban Studies} (published online before print): 004209801877955 \doi{10.1177/0042098018779554}.
+	
+	\bibitem[{Ben-Shahar and Golan(2019)}]{ben-shahar_improved_2019}
+	Ben-Shahar D and Golan R (2019) Improved {Information} {Shock} and {Price}
+	{Dispersion}: {A} {Natural} {Experiment} in the {Housing} {Market}.
+	\newblock \emph{Journal of Urban Economics} (published online before print):
+	S0094119019300464 \doi{10.1016/j.jue.2019.05.008}.
+	
+	\bibitem[{Besbris and Faber(2017)}]{besbris_investigating_2017}
+	Besbris M and Faber JW (2017) Investigating the {Relationship} {Between} {Real}
+	{Estate} {Agents}, {Segregation}, and {House} {Prices}: {Steering} and
+	{Upselling} in {New} {York} {State}.
+	\newblock \emph{Sociological Forum} 32(4): 850--873.
+	\newblock \doi{10.1111/socf.12378}.
+	
+	\bibitem[{Besbris et~al.(2018)Besbris, Schachter and
+		Kuk}]{besbris_language_2018}
+	Besbris M, Schachter A and Kuk J (2018) The {Language} of {Segregation}:
+	{Variation} in the {Description} of {Rental} {Housing} {Across}
+	{Neighborhoods}.
+	\newblock Presented at the \emph{American {Sociological} {Association} {Annual} {Meeting}}.
+	Philadelphia, PA. August 11--14, 2018.
+	
+	\bibitem[{Billings and Johnson(2012)}]{billings_location_2012}
+	Billings SB and Johnson EB (2012) The location quotient as an estimator of
+	industrial concentration.
+	\newblock \emph{Regional Science and Urban Economics} 42(4): 642--647.
+	\newblock \doi{10.1016/j.regsciurbeco.2012.03.003}.
+	
+	\bibitem[{Boeing and Waddell(2017)}]{boeing_new_2017}
+	Boeing G and Waddell P (2017) New {Insights} into {Rental} {Housing} {Markets}
+	across the {United} {States}: {Web} {Scraping} and {Analyzing} {Craigslist}
+	{Rental} {Listings}.
+	\newblock \emph{Journal of Planning Education and Research} 37(4): 457--476.
+	\newblock \doi{10.1177/0739456X16664789}.
+	
+	\bibitem[{Boeing et~al.(2019)}]{boeing_spot_2019}
+	Boeing G, Wegmann J, and Jiao J (2019) {Rental} {Housing} {Spot} {Markets}:
+	{How} {Online} {Information} {Exchanges} {Can} {Supplement} {Transacted}-{Rents} {Data}.
+	\newblock Manuscript submitted for publication.
+	
+	\bibitem[{Brannon(2017)}]{brannon_datafied_2017}
+	Brannon MM (2017) Datafied and {Divided}: {Techno}-{Dimensions} of {Inequality}
+	in {American} {Cities}.
+	\newblock \emph{City \& Community} 16(1): 20--24.
+	\newblock \doi{10.1111/cico.12220}.
+	
+	\bibitem[{Brown et~al.(2017)Brown, Mukhija and Shoup}]{brown_converting_2017}
+	Brown A, Mukhija V and Shoup D (2017) Converting {Garages} into {Housing}.
+	\newblock \emph{Journal of Planning Education and Research} (published online before print):
+	0739456X1774196 \doi{10.1177/0739456X17741965}.
+	
+	\bibitem[{Brown(2014)}]{brown_rental_2014}
+	Brown KV (2014) In the rental market, {Craigslist} may be undisruptable.
+	\newblock \emph{San Francisco Chronicle}
+	\urlprefix\url{http://www.sfgate.com/technology/article/In-the-rental-market-Craigslist-may-be-5601847.php}.
+	
+	\bibitem[{Carlsson and Eriksson(2014)}]{carlsson_discrimination_2014}
+	Carlsson M and Eriksson S (2014) Discrimination in the rental market for
+	apartments.
+	\newblock \emph{Journal of Housing Economics} 23: 41--54.
+	\newblock \doi{10.1016/j.jhe.2013.11.004}.
+	
+	\bibitem[{Choi and DiNitto(2013)}]{choi_digital_2013}
+	Choi NG and DiNitto DM (2013) The {Digital} {Divide} {Among} {Low}-{Income}
+	{Homebound} {Older} {Adults}: {Internet} {Use} {Patterns}, {eHealth}
+	{Literacy}, and {Attitudes} {Toward} {Computer}/{Internet} {Use}.
+	\newblock \emph{Journal of Medical Internet Research} 15(5).
+	\newblock \doi{10.2196/jmir.2645}.
+	
+	\bibitem[{Cohen(1992)}]{cohen_power_1992}
+	Cohen J (1992) A {Power} {Primer}.
+	\newblock \emph{Psychological Bulletin} 112(1): 155--159.
+	
+	\bibitem[{Cresce(2012)}]{cresce_evaluation_2012}
+	Cresce A (2012) Evaluation of {Gross} {Vacancy} {Rates} {From} the 2010
+	{Census} {Versus} {Current} {Surveys}.
+	\newblock Working {Paper} 2012-07, US Census Bureau, Washington, DC.
+	
+	\bibitem[{DeBoer(1985)}]{deboer_resident_1985}
+	DeBoer L (1985) Resident {Age} and {Housing} {Search}: {Evidence} {From}
+	{Hedonic} {Residuals}.
+	\newblock \emph{Urban Studies} 22(5): 445--451.
+	\newblock \doi{10.1080/00420988520080761}.
+	
+	\bibitem[{Decker(2010)}]{decker_housing_2010}
+	Decker N (2010) Housing {Discrimination} and {Craigslist}.
+	\newblock \emph{The Current} 14(1): 43--57.
+	
+	\bibitem[{Desmond and Perkins(2016)}]{desmond_are_2016}
+	Desmond M and Perkins KL (2016) Are {Landlords} {Overcharging} {Housing}
+	{Voucher} {Holders}?
+	\newblock \emph{City \& Community} 15(2): 137--162.
+	\newblock \doi{10.1111/cico.12180}.
+	
+	\bibitem[{Desmond and Wilmers(2019)}]{desmond_poor_2019}
+	Desmond M and Wilmers N (2019) Do the {Poor} {Pay} {More} for {Housing}?
+	{Exploitation}, {Profit}, and {Risk} in {Rental} {Markets}.
+	\newblock \emph{American Journal of Sociology} 124(4): 1090--1124.
+	\newblock \doi{10.1086/701697}.
+	
+	\bibitem[{Ellen(2018)}]{ellen_can_2018}
+	Ellen IG (2018) Can {Gentrification} {Be} {Inclusive}?
+	\newblock In: Herbert C, Spader J, Molinsky J and Rieger S (eds.) \emph{A
+		{Shared} {Future}: {Fostering} {Communities} of {Inclusion} in an {Era} of
+		{Inequality}}. Cambridge, MA: Harvard Joint Center for Housing Studies, pp.
+	334--339.
+	
+	\bibitem[{Elwood(2010)}]{elwood_geographic_2010}
+	Elwood S (2010) Geographic {Information} {Science}: {Emerging} {Research} on
+	the {Societal} {Implications} of the {Geospatial} {Web}.
+	\newblock \emph{Progress in Human Geography} 34(3): 349--357.
+	\newblock \doi{10.1177/0309132509340711}.
+	
+	\bibitem[{Evans et~al.(2018)Evans, Blount-Hill and
+		Cubellis}]{evans_examining_2018}
+	Evans DN, Blount-Hill KL and Cubellis MA (2018) Examining housing
+	discrimination across race, gender and felony history.
+	\newblock \emph{Housing Studies} (published online before print): 1--18 \doi{10.1080/02673037.2018.1478069}.
+	
+	\bibitem[{Farley(1996)}]{farley_racial_1996}
+	Farley R (1996) Racial differences in the search for housing: {Do} whites and
+	blacks use the same techniques to find housing?
+	\newblock \emph{Housing Policy Debate} 7(2): 367--385.
+	\newblock \doi{10.1080/10511482.1996.9521225}.
+	
+	\bibitem[{Fields(2019)}]{fields_automated_2019}
+	Fields D (2019) Automated landlord: {Digital} technologies and post-crisis
+	financial accumulation.
+	\newblock \emph{Environment and Planning A: Economy and Space} (published online before print):
+	0308518X1984651.
+	\newblock \doi{10.1177/0308518X19846514}.
+	
+	\bibitem[{Folch et~al.(2018)Folch, Spielman and Manduca}]{folch_fast_2018}
+	Folch DC, Spielman SE and Manduca R (2018) Fast {Food} {Data}: {Where}
+	{User}-{Generated} {Content} {Works} and {Where} {It} {Does} {Not}.
+	\newblock \emph{Geographical Analysis} 50(2): 125--140.
+	\newblock \doi{10.1111/gean.12149}.
+	
+	\bibitem[{Garmaise and Moskowitz(2004)}]{garmaise_confronting_2004}
+	Garmaise MJ and Moskowitz TJ (2004) Confronting {Information} {Asymmetries}:
+	{Evidence} from {Real} {Estate} {Markets}.
+	\newblock \emph{Review of Financial Studies} 17(2): 405--437.
+	\newblock \doi{10.1093/rfs/hhg037}.
+	
+	\bibitem[{Halket and Pignatti Morano~di
+		Custoza(2015)}]{halket_homeownership_2015}
+	Halket J and Pignatti Morano~di Custoza M (2015) Homeownership and the scarcity
+	of rentals.
+	\newblock \emph{Journal of Monetary Economics} 76: 107--123.
+	\newblock \doi{10.1016/j.jmoneco.2015.08.003}.
+	
+	\bibitem[{Hanson and Santas(2014)}]{hanson_field_2014}
+	Hanson A and Santas M (2014) Field {Experiment} {Tests} for {Discrimination}
+	against {Hispanics} in the {U}.{S}. {Rental} {Housing} {Market}.
+	\newblock \emph{Southern Economic Journal} 81(1): 135--167.
+	\newblock \doi{10.4284/0038-4038-2012.231}.
+	
+	\bibitem[{Hau(2006)}]{hau_newspaper_2006}
+	Hau L (2006) Newspaper {Killer}.
+	\newblock \emph{Forbes}
+	\urlprefix\url{http://www.forbes.com/2006/12/08/newspaper-classifield-online-tech_cx-lh_1211craigslist.html}.
+	
+	\bibitem[{Hersberger(2003)}]{hersberger_are_2003}
+	Hersberger JA (2003) Are the {Economically} {Poor} {Information} {Poor}?
+	\newblock \emph{Canadian Journal of Information and Library Science} 27(3):
+	45--63.
+	
+	\bibitem[{Hu et~al.(2019)Hu, He, Han, Xiao, Su, Weng and
+		Cai}]{hu_monitoring_2019}
+	Hu L, He S, Han Z, Xiao H, Su S, Weng M and Cai Z (2019) Monitoring housing
+	rental prices based on social media.
+	\newblock \emph{Land Use Policy} 82: 657--673.
+	\newblock \doi{10.1016/j.landusepol.2018.12.030}.
+	
+	\bibitem[{Im et~al.(2017)Im, Seo, Cetin and Singh}]{im_energy_2017}
+	Im J, Seo Y, Cetin KS and Singh J (2017) Energy efficiency in {U}.{S}.
+	residential rental housing: {Adoption} rates and impact on rent.
+	\newblock \emph{Applied Energy} 205: 1021--1033.
+	\newblock \doi{10.1016/j.apenergy.2017.08.047}.
+	
+	\bibitem[{Jiao and Bai(2019)}]{jiao_cities_2019}
+	Jiao J and Bai S (2019) Cities reshaped by {Airbnb}: {A} case study in {New}
+	{York} {City}, {Chicago}, and {Los} {Angeles}.
+	\newblock \emph{Environment and Planning A: Economy and Space} (published online before print):
+	0308518X1985327 \doi{10.1177/0308518X19853275}.
+	
+	\bibitem[{Jones et~al.(2009)Jones, Johnson-Yale, Millermaier and
+		Pérez}]{jones_u.s._2009}
+	Jones S, Johnson-Yale C, Millermaier S and Pérez FS (2009) U.{S}. {College}
+	{Students}' {Internet} {Use}: {Race}, {Gender} and {Digital} {Divides}.
+	\newblock \emph{Journal of Computer-Mediated Communication} 14(2): 244--264.
+	\newblock \doi{10.1111/j.1083-6101.2009.01439.x}.
+	
+	\bibitem[{Kim et~al.(2019)Kim, Brown, Nelson, Ehrenfeucht, Holman, Gurran,
+		Sadowski, Ferreri, Sanyal, Bastos and Kresse}]{kim_planning_2019}
+	Kim AJ, Brown A, Nelson M, Ehrenfeucht R, Holman N, Gurran N, Sadowski J,
+	Ferreri M, Sanyal R, Bastos M and Kresse K (2019) Planning and the
+	{So}-{Called} '{Sharing}' {Economy} / {Can} {Shared} {Mobility} {Deliver}
+	{Equity}? / {The} {Sharing} {Economy} and the {Ongoing} {Dilemma} about {How}
+	to {Plan} for {Informality} / {Regulating} {Platform} {Economies} in {Cities}
+	– {Disrupting} the {Disruption}? / {Regulatory} {Combat}? {How} the
+	'{Sharing} {Economy}' is {Disrupting} {Planning} {Practice} / {Corporatised}
+	{Enforcement}: {Challenges} of {Regulating} {AirBnB} and {Other} {Platform}
+	{Economies} / {Nurturing} a {Generative} {Sharing} {Economy} for {Local}
+	{Public} {Goods} and {Service} {Provision}.
+	\newblock \emph{Planning Theory \& Practice} 20(2): 261--287.
+	\newblock \doi{10.1080/14649357.2019.1599612}.
+	
+	\bibitem[{Kroft and Pope(2014)}]{kroft_does_2014}
+	Kroft K and Pope DG (2014) Does {Online} {Search} {Crowd} {Out} {Traditional}
+	{Search} and {Improve} {Matching} {Efficiency}? {Evidence} from {Craigslist}.
+	\newblock \emph{Journal of Labor Economics} 32(2): 259--303.
+	\newblock \doi{10.1086/673374}.
+	
+	\bibitem[{Krysan(2008)}]{krysan_does_2008}
+	Krysan M (2008) Does race matter in the search for housing? {An} exploratory
+	study of search strategies, experiences, and locations.
+	\newblock \emph{Social Science Research} 37(2): 581--603.
+	\newblock \doi{10.1016/j.ssresearch.2007.06.001}.
+	
+	\bibitem[{Krysan and Bader(2009)}]{krysan_racial_2009}
+	Krysan M and Bader MDM (2009) Racial {Blind} {Spots}: {Black}-{White}-{Latino}
+	{Differences} in {Community} {Knowledge}.
+	\newblock \emph{Social Problems} 56(4): 677--701.
+	\newblock \doi{10.1525/sp.2009.56.4.677}.
+	
+	\bibitem[{Krysan and Crowder(2017)}]{krysan_cycle_2017}
+	Krysan M and Crowder K (2017) \emph{Cycle of {Segregation}}.
+	\newblock New York, NY: Russell Sage Foundation.
+	
+	\bibitem[{Kurlat and Stroebel(2015)}]{kurlat_testing_2015}
+	Kurlat P and Stroebel J (2015) Testing for {Information} {Asymmetries} in
+	{Real} {Estate} {Markets}.
+	\newblock \emph{The Review of Financial Studies} 28(8): 2429--2461.
+	\newblock \doi{10.1093/rfs/hhv028}.
+	
+	\bibitem[{Larkin(2010)}]{larkin_criminal_2010}
+	Larkin JE (2010) Criminal and civil liability for user generated content:
+	{Craigslist}, a case study.
+	\newblock \emph{Journal of Technology Law \& Policy} 15: 85.
+	
+	\bibitem[{Leszczynski(2016)}]{leszczynski_speculative_2016}
+	Leszczynski A (2016) Speculative {Futures}: {Cities}, {Data}, and {Governance}
+	beyond {Smart} {Urbanism}.
+	\newblock \emph{Environment and Planning A: Economy and Space} 48(9):
+	1691--1708.
+	\newblock \doi{10.1177/0308518X16651445}.
+	
+	\bibitem[{Levitt and Syverson(2008)}]{levitt_market_2008}
+	Levitt SD and Syverson C (2008) Market {Distortions} {When} {Agents} {Are}
+	{Better} {Informed}: {The} {Value} of {Information} in {Real} {Estate}
+	{Transactions}.
+	\newblock \emph{The Review of Economics and Statistics} 90(4): 599--611.
+	\newblock \doi{10.1162/rest.90.4.599}.
+	
+	\bibitem[{Logan et~al.(2019)Logan, Bauer, Ke, Xu and Li}]{logan_models_2019}
+	Logan JR, Bauer C, Ke J, Xu H and Li F (2019) Models for {Small} {Area}
+	{Estimation} for {Census} {Tracts}.
+	\newblock \emph{Geographical Analysis} (published online before print): gean.12215.
+	\newblock \doi{10.1111/gean.12215}.
+	
+	\bibitem[{Mallach(2010)}]{mallach_meeting_2010}
+	Mallach A (2010) Meeting the challenge of distressed property investors in
+	{America}'s neighborhoods.
+	\newblock Technical Report, Local Initiatives Support Corporation, New York, NY.
+	
+	\bibitem[{Mattern(2014)}]{mattern_interfacing_2014}
+	Mattern S (2014) Interfacing {Urban} {Intelligence}.
+	\newblock \emph{Places}
+	\urlprefix\url{https://placesjournal.org/article/interfacing-urban-intelligence/}.
+	
+	\bibitem[{McLaughlin and Young(2018)}]{mclaughlin_data_2018}
+	McLaughlin R and Young C (2018) Data {Democratization} and {Spatial}
+	{Heterogeneity} in the {Housing} {Market}.
+	\newblock In: Herbert C, Spader J, Molinsky J and Rieger S (eds.) \emph{A
+		{Shared} {Future}: {Fostering} {Communities} of {Inclusion} in an {Era} of
+		{Inequality}}. Cambridge, MA: Harvard Joint Center for Housing Studies, pp.
+	126--139.
+	
+	\bibitem[{Mendez(2016)}]{mendez_professional_2016}
+	Mendez P (2016) Professional experts and lay knowledge in {Vancouver}'s
+	accessory apartment rental market.
+	\newblock \emph{Environment and Planning A: Economy and Space} 48(11): 2223--2238.
+	\newblock \doi{10.1177/0308518X16657550}.
+	
+	\bibitem[{Metzger et~al.(2019)Metzger, Bender, Flowers, Murugan and
+		Ravindranath}]{metzger_step_2019}
+	Metzger MW, Bender A, Flowers A, Murugan V and Ravindranath D (2019) Step by
+	step: tenant accounts of securing and maintaining quality housing with a
+	housing choice voucher.
+	\newblock \emph{Journal of Community Practice} 27(1): 31--44.
+	\newblock \doi{10.1080/10705422.2019.1580653}.
+	
+	\bibitem[{Murchie and Pang(2018)}]{murchie_rental_2018}
+	Murchie J and Pang J (2018) Rental housing discrimination across protected
+	classes.
+	\newblock \emph{Regional Science and Urban Economics} 73: 170--179.
+	\newblock \doi{10.1016/j.regsciurbeco.2018.10.003}.
+	
+	\bibitem[{Narayanan and MacDonald(2019)}]{narayanan_toward_2019}
+	Narayanan A and MacDonald G (2019) Toward an {Open} {Data} {Bias} {Assessment}
+	{Tool}: {Measuring} {Bias} in {Open} {Spatial} {Data}.
+	\newblock Working {Paper}, Urban Institute, Washington, DC.
+	
+	\bibitem[{Newburger(1995)}]{newburger_sources_1995}
+	Newburger H (1995) Sources of {Difference} in {Information} {Used} by {Black}
+	and {White} {Housing} {Seekers}: {An} {Exploratory} {Analysis}.
+	\newblock \emph{Urban Studies} 32(3): 445--470.
+	\newblock \doi{10.1080/00420989550012915}.
+	
+	\bibitem[{Oliveri(2010)}]{oliveri_discriminatory_2010}
+	Oliveri RC (2010) Discriminatory {Housing} {Advertisements} {On}-{Line}:
+	{Lessons} from {Craigslist}.
+	\newblock \emph{Indiana Law Review} 43: 1125--1183.
+	
+	\bibitem[{Palm(2018)}]{palm_scale_2018}
+	Palm M (2018) Scale in {Housing} {Policy}: {A} {Case} {Study} of the
+	{Potential} of {Small} {Area} {Fair} {Market} {Rents}.
+	\newblock \emph{Cityscape} 20(1): 147--166.
+	
+	\bibitem[{Palm and Danis(2001)}]{palm_residential_2001}
+	Palm R and Danis MA (2001) Residential {Mobility}: {The} {Impacts} of
+	{Web}-{Based} {Information} on the {Search} {Process} and {Spatial} {Housing}
+	{Choice} {Patterns}.
+	\newblock \emph{Urban Geography} 22(7): 641--655.
+	\newblock \doi{10.2747/0272-3638.22.7.641}.
+	
+	\bibitem[{Pendall(2018)}]{pendall_pathways_2018}
+	Pendall R (2018) Pathways to {Inclusion}: {Contexts} for {Neighborhood}
+	{Integration} in {Chicago}, {Houston}, and {Washington}.
+	\newblock In: Herbert C, Spader J, Molinsky J and Rieger S (eds.) \emph{A
+		{Shared} {Future}: {Fostering} {Communities} of {Inclusion} in an {Era} of
+		{Inequality}}. Cambridge, MA: Harvard Joint Center for Housing Studies, pp.
+	172--188.
+	
+	\bibitem[{{Pew Research Center}(2018)}]{pew_research_center_internet_2018}
+	{Pew Research Center} (2018) Internet use by race/ethnicity.
+	\newblock
+	\urlprefix\url{http://www.pewinternet.org/chart/internet-use-by-race/}.
+	
+	\bibitem[{{Pew Research Center}(2019)}]{pew_research_center_10_2019}
+	{Pew Research Center} (2019) 10\% of {Americans} don't use the internet. {Who}
+	are they?
+	\newblock
+	\urlprefix\url{https://www.pewresearch.org/fact-tank/2019/04/22/some-americans-dont-use-the-internet-who-are-they/}.
+	
+	\bibitem[{Porter and Donthu(2006)}]{porter_using_2006}
+	Porter CE and Donthu N (2006) Using the technology acceptance model to explain
+	how attitudes determine {Internet} usage: {The} role of perceived access
+	barriers and demographics.
+	\newblock \emph{Journal of Business Research} 59(9): 999--1007.
+	\newblock \doi{10.1016/j.jbusres.2006.06.003}.
+	
+	\bibitem[{Rae(2015)}]{rae_online_2015}
+	Rae A (2015) Online {Housing} {Search} and the {Geography} of {Submarkets}.
+	\newblock \emph{Housing Studies} 30(3): 453--472.
+	\newblock \doi{10.1080/02673037.2014.974142}.
+	
+	\bibitem[{Reina et~al.(2019)Reina, Acolin and Bostic}]{reina_section_2019}
+	Reina V, Acolin A and Bostic RW (2019) Section 8 {Vouchers} and {Rent}
+	{Limits}: {Do} {Small} {Area} {Fair} {Market} {Rent} {Limits} {Increase}
+	{Access} to {Opportunity} {Neighborhoods}?
+	\newblock \emph{Housing Policy Debate} 29(1): 44--61.
+	\newblock \doi{10.1080/10511482.2018.1476897}.
+	
+	\bibitem[{Riddlesden and Singleton(2014)}]{riddlesden_broadband_2014}
+	Riddlesden D and Singleton AD (2014) Broadband speed equity: {A} new digital
+	divide?
+	\newblock \emph{Applied Geography} 52: 25--33.
+	\newblock \doi{10.1016/j.apgeog.2014.04.008}.
+	
+	\bibitem[{Robinson et~al.(2015)Robinson, Cotten, Ono, Quan-Haase, Mesch, Chen,
+		Schulz, Hale and Stern}]{robinson_digital_2015}
+	Robinson L, Cotten SR, Ono H, Quan-Haase A, Mesch G, Chen W, Schulz J, Hale TM
+	and Stern MJ (2015) Digital inequalities and why they matter.
+	\newblock \emph{Information, Communication \& Society} 18(5): 569--582.
+	\newblock \doi{10.1080/1369118X.2015.1012532}.
+	
+	\bibitem[{Rosen(2014)}]{rosen_rigging_2014}
+	Rosen E (2014) Rigging the {Rules} of the {Game}: {How} {Landlords}
+	{Geographically} {Sort} {Low}-{Income} {Renters}.
+	\newblock \emph{City \& Community} 13(4): 310--340.
+	\newblock \doi{10.1111/cico.12087}.
+	
+	\bibitem[{Sampson and Sharkey(2008)}]{sampson_neighborhood_2008}
+	Sampson RJ and Sharkey P (2008) Neighborhood {Selection} and the {Social}
+	{Reproduction} of {Concentrated} {Racial} {Inequality}.
+	\newblock \emph{Demography} 45(1): 1--29.
+	\newblock \doi{10.1353/dem.2008.0012}.
+	
+	\bibitem[{Schachter and Besbris(2017)}]{schachter_immigration_2017}
+	Schachter A and Besbris M (2017) Immigration and {Neighborhood} {Change}:
+	{Methodological} {Possibilities} for {Future} {Research}.
+	\newblock \emph{City \& Community} 16(3): 244--251.
+	\newblock \doi{10.1111/cico.12242}.
+	
+	\bibitem[{Schwartz et~al.(2017)Schwartz, Mihaly and
+		Gala}]{schwartz_encouraging_2017}
+	Schwartz HL, Mihaly K and Gala B (2017) Encouraging {Residential} {Moves} to
+	{Opportunity} {Neighborhoods}: {An} {Experiment} {Testing} {Incentives}
+	{Offered} to {Housing} {Voucher} {Recipients}.
+	\newblock \emph{Housing Policy Debate} 27(2): 230--260.
+	\newblock \doi{10.1080/10511482.2016.1212247}.
+	
+	\bibitem[{Seamans and Zhu(2014)}]{seamans_responses_2014}
+	Seamans R and Zhu F (2014) Responses to {Entry} in {Multi}-{Sided} {Markets}:
+	{The} {Impact} of {Craigslist} on {Local} {Newspapers}.
+	\newblock \emph{Management Science} 60(2): 476--493.
+	\newblock \doi{10.1287/mnsc.2013.1785}.
+	
+	\bibitem[{Shaw(2018)}]{shaw_platform_2018}
+	Shaw J (2018) Platform {Real} {Estate}: {Theory} and {Practice} of {New}
+	{Urban} {Real} {Estate} {Markets}.
+	\newblock \emph{Urban Geography} (published online before print): 1--28 \doi{10.1080/02723638.2018.1524653}.
+	
+	\bibitem[{Slate et~al.(2002)Slate, Manuel and Brinson}]{slate_digital_2002}
+	Slate JR, Manuel M and Brinson KH (2002) The {Digital} {Divide}: {Hispanic}
+	college students' views of educational uses of the {Internet}.
+	\newblock \emph{Assessment \& Evaluation in Higher Education} 27(1): 75--93.
+	\newblock \doi{10.1080/02602930120105081}.
+	
+	\bibitem[{Spielman et~al.(2014)Spielman, Folch and
+		Nagle}]{spielman_patterns_2014}
+	Spielman SE, Folch D and Nagle N (2014) Patterns and causes of uncertainty in
+	the {American} {Community} {Survey}.
+	\newblock \emph{Applied Geography} 46: 147--157.
+	\newblock \doi{10.1016/j.apgeog.2013.11.002}.
+	
+	\bibitem[{Steil and Jordan(2018)}]{steil_household_2018}
+	Steil J and Jordan R (2018) Household {Neighborhood} {Decisionmaking} and
+	{Segregation}.
+	\newblock In: Herbert C, Spader J, Molinsky J and Rieger S (eds.) \emph{A
+		{Shared} {Future}: {Fostering} {Communities} of {Inclusion} in an {Era} of
+		{Inequality}}. Cambridge, MA: Harvard Joint Center for Housing Studies, pp.
+	114--124.
+	
+	\bibitem[{Stephens(2013)}]{stephens_gender_2013}
+	Stephens M (2013) Gender and the {GeoWeb}.
+	\newblock \emph{GeoJournal} 78(6): 981--996.
+	\newblock \doi{10.1007/s10708-013-9492-z}.
+	
+	\bibitem[{Thatcher et~al.(2016)Thatcher, Bergmann, Ricker, Rose-Redwood,
+		O'Sullivan, Barnes, Barnesmoore, Beltz~Imaoka, Burns, Cinnamon, Dalton,
+		Davis, Dunn, Harvey, Jung, Kersten, Knigge, Lally, Lin, Mahmoudi, Martin,
+		Payne, Sheikh, Shelton, Sheppard, Strother, Tarr, Wilson and
+		Young}]{thatcher_revisiting_2016}
+	Thatcher J, Bergmann L, Ricker B, Rose-Redwood R, O'Sullivan D, Barnes TJ,
+	Barnesmoore LR, Beltz~Imaoka L, Burns R, Cinnamon J, Dalton CM, Davis C, Dunn
+	S, Harvey F, Jung JK, Kersten E, Knigge L, Lally N, Lin W, Mahmoudi D, Martin
+	M, Payne W, Sheikh A, Shelton T, Sheppard E, Strother CW, Tarr A, Wilson MW
+	and Young JC (2016) Revisiting {Critical} {GIS}.
+	\newblock \emph{Environment and Planning A: Economy and Space} 48(5): 815--824.
+	\newblock \doi{10.1177/0308518X15622208}.
+	
+	\bibitem[{Weber and Jaimes(2011)}]{weber_who_2011}
+	Weber I and Jaimes A (2011) Who uses web search for what and how?
+	\newblock In: \emph{Proceedings of the Fourth {ACM} International Conference on
+		{Web} Search and Data Mining}. ACM, pp. 15--24.
+	
+	\bibitem[{Wegmann and Chapple(2012)}]{wegmann_understanding_2012}
+	Wegmann J and Chapple K (2012) Understanding the {Market} for {Secondary}
+	{Units} in the {East} {Bay}.
+	\newblock Working {Paper} WP-2012-03, Institute of Urban and Regional
+	Development, University of California, Berkeley.
+	
+	\bibitem[{Wegmann and Jiao(2017)}]{wegmann_taming_2017}
+	Wegmann J and Jiao J (2017) Taming {Airbnb}: {Toward} guiding principles for
+	local regulation of urban vacation rentals based on empirical results from
+	five {US} cities.
+	\newblock \emph{Land Use Policy} 69: 494--501.
+	\newblock \doi{10.1016/j.landusepol.2017.09.025}.
+	
+	\bibitem[{Yurieff(2017)}]{yurieff_facebook_2017}
+	Yurieff K (2017) Facebook continues {Craigslist} takeover with housing rentals.
+	\newblock
+	\urlprefix\url{http://money.cnn.com/2017/11/09/technology/facebook-marketplace-housing-rentals/index.html}.
+	
+\end{thebibliography}
+
+\end{document}
